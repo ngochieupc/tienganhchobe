@@ -540,47 +540,96 @@ function render() {
 
 // --- SPEECH ---
 let currentBtn = null;
-function speak(btn, text) {
-  // Nếu đang phát cùng câu thì dừng
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    if (currentBtn) { currentBtn.classList.remove("speaking"); currentBtn.textContent = "🔊"; }
-    if (currentBtn === btn) { currentBtn = null; return; }
-  }
 
+// Preload & cache voices
+let _voices = [];
+function loadVoices() {
+  _voices = window.speechSynthesis.getVoices();
+}
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
+
+function getPreferredVoice() {
+  const voices = _voices.length ? _voices : window.speechSynthesis.getVoices();
+  return voices.find(v => v.lang === "en-US" && /female|samantha|zira|karen|susan|victoria/i.test(v.name))
+      || voices.find(v => v.lang === "en-US")
+      || voices.find(v => v.lang.startsWith("en"))
+      || null;
+}
+
+function doSpeak(btn, text) {
   currentBtn = btn;
   btn.classList.add("speaking");
   btn.textContent = "🔉";
 
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "en-US";
-  utter.rate = 0.78;   // chậm cho trẻ nhỏ dễ nhắc lại
+  utter.rate = 0.78;
   utter.pitch = 1.05;
   utter.volume = 1;
 
-  // Ưu tiên giọng nữ tiếng Anh Mỹ
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.lang === "en-US" && /female|samantha|zira|karen/i.test(v.name))
-                 || voices.find(v => v.lang === "en-US")
-                 || voices.find(v => v.lang.startsWith("en"));
+  const preferred = getPreferredVoice();
   if (preferred) utter.voice = preferred;
 
-  utter.onend = () => {
+  const reset = () => {
     btn.classList.remove("speaking");
     btn.textContent = "🔊";
     currentBtn = null;
   };
-  utter.onerror = () => {
-    btn.classList.remove("speaking");
-    btn.textContent = "🔊";
-    currentBtn = null;
-  };
+  utter.onend = reset;
+  utter.onerror = reset;
 
   window.speechSynthesis.speak(utter);
 }
 
-// Preload voices (Chrome cần trigger trước)
-window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+function speak(btn, text) {
+  // Dừng nếu đang phát
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+    window.speechSynthesis.cancel();
+    if (currentBtn) { currentBtn.classList.remove("speaking"); currentBtn.textContent = "🔊"; }
+    const wasBtn = currentBtn;
+    currentBtn = null;
+    if (wasBtn === btn) return; // bấm lại cùng nút → chỉ dừng
+  }
+
+  // Nếu voices chưa sẵn sàng, chờ rồi phát (fix Chrome lần đầu)
+  if (!_voices.length) {
+    btn.classList.add("speaking");
+    btn.textContent = "⏳";
+    const trySpeak = () => {
+      loadVoices();
+      if (_voices.length) {
+        doSpeak(btn, text);
+      } else {
+        // Fallback: phát không cần chọn giọng
+        doSpeak(btn, text);
+      }
+    };
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      const orig = window.speechSynthesis.onvoiceschanged;
+      window.speechSynthesis.onvoiceschanged = () => {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = orig;
+        btn.classList.remove("speaking");
+        btn.textContent = "🔊";
+        doSpeak(btn, text);
+      };
+      // Timeout phòng trường hợp event không bắn
+      setTimeout(() => {
+        if (btn.textContent === "⏳") {
+          btn.classList.remove("speaking");
+          btn.textContent = "🔊";
+          doSpeak(btn, text);
+        }
+      }, 800);
+    } else {
+      setTimeout(() => trySpeak(), 300);
+    }
+    return;
+  }
+
+  doSpeak(btn, text);
+}
 
 init();
 </script>
