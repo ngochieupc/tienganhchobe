@@ -21,10 +21,11 @@
     background: var(--darker);
     color: var(--text);
     min-height: 100vh;
+    overflow-y: auto; /* Đảm bảo luôn có thanh cuộn dọc */
     overflow-x: hidden;
   }
 
-  /* FLOATING BUBBLES BG */
+  /* BUBBLES BG - z-index thấp để không che nội dung */
   .bg-bubbles {
     position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
   }
@@ -41,7 +42,7 @@
 
   /* HERO */
   .hero {
-    position: relative; z-index: 1;
+    position: relative; z-index: 5;
     text-align: center;
     padding: 60px 20px 40px;
     background: linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%);
@@ -55,7 +56,6 @@
     letter-spacing: 3px; text-transform: uppercase;
     padding: 6px 20px; border-radius: 50px;
     margin-bottom: 20px;
-    animation: fadeDown 0.6s ease both;
   }
   .hero h1 {
     font-family: 'Baloo 2', sans-serif;
@@ -66,41 +66,27 @@
     background-size: 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 4s linear infinite, fadeDown 0.6s 0.1s ease both;
+    animation: shimmer 4s linear infinite;
   }
   @keyframes shimmer { 0%{background-position:0%} 100%{background-position:300%} }
-  .hero-sub {
-    color: var(--muted); font-size: 16px; margin-top: 12px;
-    animation: fadeDown 0.6s 0.2s ease both;
-  }
+  
   .hero-stats {
     display: flex; justify-content: center; gap: 32px; margin-top: 28px;
-    animation: fadeDown 0.6s 0.3s ease both;
     flex-wrap: wrap;
-  }
-  .stat {
-    text-align: center;
   }
   .stat-num {
     font-family: 'Baloo 2', sans-serif;
     font-size: 32px; font-weight: 800;
     background: linear-gradient(135deg, #FFD93D, #FF6B6B);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .stat-label { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-  @keyframes fadeDown {
-    from { opacity:0; transform: translateY(-20px); }
-    to { opacity:1; transform: translateY(0); }
-  }
-
-  /* SEARCH */
+  /* SEARCH & TABS */
   .search-wrap {
-    position: relative; z-index: 1;
+    position: relative; z-index: 10;
     max-width: 560px; margin: 0 auto 32px;
     padding: 0 20px;
-    animation: fadeDown 0.6s 0.4s ease both;
   }
   .search-wrap input {
     width: 100%;
@@ -109,289 +95,156 @@
     border-radius: 50px;
     padding: 14px 20px 14px 52px;
     color: var(--text);
-    font-family: 'Nunito', sans-serif;
     font-size: 15px; font-weight: 600;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
   }
-  .search-wrap input:focus {
-    border-color: var(--active);
-    box-shadow: 0 0 0 3px var(--active)22;
-  }
-  .search-wrap input::placeholder { color: var(--muted); }
-  .search-icon {
-    position: absolute; left: 38px; top: 50%; transform: translateY(-50%);
-    font-size: 20px; pointer-events: none;
-  }
-  #search-count {
-    text-align: center; font-size: 13px; color: var(--muted);
-    margin-top: 8px; font-weight: 600; min-height: 20px;
-  }
+  .search-wrap input:focus { border-color: var(--active); box-shadow: 0 0 0 3px var(--active)22; }
+  .search-icon { position: absolute; left: 38px; top: 50%; transform: translateY(-50%); font-size: 20px; }
 
-  /* TABS */
   .tabs-wrap {
-    position: relative; z-index: 1;
+    position: relative; z-index: 10;
     display: flex; justify-content: center; gap: 8px;
     padding: 0 20px 32px; flex-wrap: wrap;
-    animation: fadeDown 0.6s 0.5s ease both;
   }
   .tab-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 22px;
-    border-radius: 50px;
-    border: 2px solid #333355;
-    background: var(--card);
-    color: var(--muted);
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 14px; font-weight: 700;
-    cursor: pointer;
-    transition: all 0.25s;
-    white-space: nowrap;
+    padding: 10px 22px; border-radius: 50px;
+    border: 2px solid #333355; background: var(--card);
+    color: var(--muted); cursor: pointer; font-weight: 700; transition: 0.25s;
   }
-  .tab-btn:hover { border-color: var(--active); color: var(--text); transform: translateY(-2px); }
-  .tab-btn.active {
-    color: white;
-    border-color: transparent;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px currentColor22;
-  }
-  .tab-btn.active[data-part="0"] { background: linear-gradient(135deg, #FF6B6B, #FF8E53); box-shadow: 0 6px 20px #FF6B6B44; }
-  .tab-btn.active[data-part="1"] { background: linear-gradient(135deg, #00BCD4, #0097A7); box-shadow: 0 6px 20px #00BCD444; }
-  .tab-btn.active[data-part="2"] { background: linear-gradient(135deg, #4CAF50, #2E7D32); box-shadow: 0 6px 20px #4CAF5044; }
-  .tab-btn.active[data-part="3"] { background: linear-gradient(135deg, #E91E8C, #AD1457); box-shadow: 0 6px 20px #E91E8C44; }
-  .tab-btn.all { }
-  .tab-btn.all.active { background: linear-gradient(135deg, #7C3AED, #4F46E5); box-shadow: 0 6px 20px #7C3AED44; }
+  .tab-btn.active { color: white; border-color: transparent; transform: translateY(-2px); }
+  .tab-btn.active[data-part="-1"] { background: linear-gradient(135deg, #7C3AED, #4F46E5); }
+  .tab-btn.active[data-part="0"] { background: var(--c1); }
+  .tab-btn.active[data-part="1"] { background: var(--c2); }
+  .tab-btn.active[data-part="2"] { background: var(--c3); }
+  .tab-btn.active[data-part="3"] { background: var(--c4); }
 
   /* MAIN */
-  main {
-    position: relative; z-index: 1;
-    max-width: 1200px; margin: 0 auto;
-    padding: 0 20px 60px;
-  }
-
-  /* PART SECTION */
+  main { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
   .part-section { margin-bottom: 48px; }
-  .part-header {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 20px; padding: 20px 28px;
-    border-radius: var(--radius);
-    position: relative; overflow: hidden;
-  }
-  .part-header::before {
-    content: ''; position: absolute; inset: 0;
-    background: inherit; filter: brightness(0.85);
-    z-index: 0;
-  }
-  .part-header > * { position: relative; z-index: 1; }
-  .part-header-icon { font-size: 44px; line-height:1; }
-  .part-header-text { flex:1; }
-  .part-header-label {
-    font-size: 11px; font-weight: 800; text-transform: uppercase;
-    letter-spacing: 3px; opacity: 0.8; margin-bottom: 2px;
-  }
-  .part-header-title {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 26px; font-weight: 800; color: white;
-  }
-  .part-header-badge {
-    background: rgba(255,255,255,0.2);
-    color: white; font-size: 13px; font-weight: 800;
-    padding: 6px 16px; border-radius: 50px;
-    border: 1.5px solid rgba(255,255,255,0.35);
-    white-space: nowrap;
-  }
-
-  /* TOPICS GRID */
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 16px;
-  }
-
-  /* TOPIC CARD */
-  .topic-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1.5px solid #2D2D50;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    animation: cardIn 0.4s ease both;
-  }
-  .topic-card:hover {
-    transform: translateY(-4px);
-    border-color: #4D4D80;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-  }
-  @keyframes cardIn {
-    from { opacity:0; transform: translateY(16px) scale(0.97); }
-    to   { opacity:1; transform: translateY(0) scale(1); }
-  }
-  .topic-card-header {
-    padding: 12px 18px;
-    display: flex; align-items: center; gap: 10px;
-    border-bottom: 1px solid #2D2D50;
-  }
-  .topic-card-icon { font-size: 24px; }
-  .topic-card-name {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 15px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .topic-card-count {
-    margin-left: auto;
-    font-size: 11px; font-weight: 800;
-    padding: 3px 10px; border-radius: 50px;
-    background: #3D3D60; color: var(--muted);
-  }
-
-  /* SENTENCE ROWS */
-  .sentences { padding: 8px 0; }
-  .sentence-row {
-    display: grid;
-    grid-template-columns: 28px 1fr 1fr 30px;
-    gap: 8px;
-    align-items: center;
-    padding: 8px 14px 8px 18px;
-    border-bottom: 1px solid #22223A;
-    transition: background 0.15s;
-    cursor: default;
-  }
-  .sentence-row:last-child { border-bottom: none; }
-  .sentence-row:hover { background: #2A2A40; }
-  .sentence-row.hidden { display: none; }
-  .stt-badge {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 900;
-    color: white; flex-shrink: 0; margin-top: 2px;
-  }
-  .en-text {
-    font-size: 13px; font-weight: 700;
-    color: var(--text); line-height: 1.45;
-  }
-  .vi-text {
-    font-size: 12px; color: var(--muted);
-    font-style: italic; line-height: 1.45;
-  }
+  .part-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding: 20px 28px; border-radius: var(--radius); position: relative; color: white; }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  
+  .topic-card { background: var(--card); border-radius: var(--radius); border: 1.5px solid #2D2D50; overflow: hidden; transition: 0.2s; }
+  .topic-card:hover { transform: translateY(-4px); border-color: #4D4D80; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .topic-card-header { padding: 12px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2D2D50; }
+  
+  .sentence-row { display: grid; grid-template-columns: 28px 1fr 1fr 30px; gap: 8px; align-items: center; padding: 10px 14px; border-bottom: 1px solid #22223A; }
+  .stt-badge { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; color: white; }
+  .en-text { font-size: 13px; font-weight: 700; color: var(--text); }
+  .vi-text { font-size: 12px; color: var(--muted); font-style: italic; }
 
   /* SPEAK BUTTON */
-  .speak-btn {
-    background: none; border: none; cursor: pointer;
-    width: 28px; height: 28px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; flex-shrink: 0;
-    color: var(--muted);
-    transition: background 0.15s, color 0.15s, transform 0.15s;
-    padding: 0; margin-top: 1px;
-  }
-  .speak-btn:hover { background: #3D3D60; color: var(--text); transform: scale(1.15); }
-  .speak-btn.speaking {
-    color: #FFD93D;
-    animation: speakPulse 0.6s ease-in-out infinite alternate;
-  }
-  @keyframes speakPulse {
-    from { transform: scale(1);   color: #FFD93D; }
-    to   { transform: scale(1.3); color: #FF6B6B; }
-  }
+  .speak-btn { background: none; border: none; cursor: pointer; width: 30px; height: 30px; color: var(--muted); transition: 0.2s; font-size: 16px; }
+  .speak-btn.speaking { color: #FFD93D; animation: speakPulse 0.6s infinite alternate; }
+  @keyframes speakPulse { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-  /* HIGHLIGHT */
-  .hl { background: #FFD93D33; color: #FFD93D; border-radius: 3px; padding: 0 2px; font-style: normal; }
-
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center; padding: 80px 20px;
-    color: var(--muted); font-size: 16px; display: none;
-  }
-  .empty-state .big { font-size: 48px; margin-bottom: 12px; }
-
-  /* BACK TO TOP */
+  /* UI ELEMENTS */
+  #progress { position: fixed; top: 0; left: 0; height: 4px; z-index: 9999; background: linear-gradient(90deg, #FF6B6B, #FFD93D, #00BCD4, #E91E8C); transition: width 0.1s; }
   #back-top {
-    position: fixed; bottom: 28px; right: 28px; z-index: 999;
-    width: 48px; height: 48px; border-radius: 50%;
+    position: fixed; bottom: 30px; right: 30px; z-index: 1000;
+    width: 50px; height: 50px; border-radius: 50%;
     background: linear-gradient(135deg, #FF6B6B, #E91E8C);
-    color: white; font-size: 22px; border: none; cursor: pointer;
-    box-shadow: 0 4px 20px #FF6B6B55;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s, transform 0.2s;
+    color: white; font-size: 24px; border: none; cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+    opacity: 0; visibility: hidden; transition: 0.3s;
     display: flex; align-items: center; justify-content: center;
   }
-  #back-top.show { opacity: 1; pointer-events: all; }
-  #back-top:hover { transform: scale(1.1); }
-
-  /* FOOTER */
-  footer {
-    position: relative; z-index: 1;
-    text-align: center; padding: 32px 20px;
-    border-top: 1px solid #2D2D50;
-    color: var(--muted); font-size: 13px; font-weight: 600;
-  }
-  footer span { color: #FF6B6B; }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .topics-grid { grid-template-columns: 1fr; }
-    .hero { padding: 40px 16px 28px; }
-    .part-header { padding: 16px 18px; }
-    .part-header-title { font-size: 20px; }
-    .sentence-row { grid-template-columns: 24px 1fr 1fr 26px; gap: 6px; padding: 7px 10px 7px 12px; }
-  }
-
-  /* PROGRESS BAR TOP */
-  #progress {
-    position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
-    background: linear-gradient(90deg, #FF6B6B, #FFD93D, #00BCD4, #E91E8C);
-    transition: width 0.1s;
-  }
+  #back-top.show { opacity: 1; visibility: visible; }
+  
+  footer { position: relative; z-index: 10; text-align: center; padding: 40px 20px; border-top: 1px solid #2D2D50; color: var(--muted); line-height: 1.8; }
+  .hl { background: #FFD93D33; color: #FFD93D; padding: 0 2px; border-radius: 3px; }
+  .creator-info { color: #FFD93D; font-weight: 700; margin-top: 10px; font-size: 14px; }
 </style>
 </head>
 <body>
 
 <div id="progress" style="width:0%"></div>
-
-<!-- BG BUBBLES -->
 <div class="bg-bubbles" id="bubbles"></div>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-badge">✨ Học Tiếng Anh Cùng Con</div>
   <h1>400 Câu Tiếng Anh<br>Ba/Mẹ Dạy Con 🌟</h1>
-  <p class="hero-sub">Tổng hợp đầy đủ từ giao tiếp hàng ngày đến khám phá thế giới</p>
+  <p class="hero-sub">Phát âm chuẩn AI giúp bé làm quen với môi trường tiếng Anh tại nhà</p>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">340</div><div class="stat-label">Câu tiếng Anh</div></div>
-    <div class="stat"><div class="stat-num">34</div><div class="stat-label">Chủ đề</div></div>
+    <div class="stat"><div class="stat-num">400</div><div class="stat-label">Câu tiếng Anh</div></div>
+    <div class="stat"><div class="stat-num">40</div><div class="stat-label">Chủ đề</div></div>
     <div class="stat"><div class="stat-num">4</div><div class="stat-label">Phần học</div></div>
   </div>
 </div>
 
-<!-- SEARCH -->
 <div class="search-wrap">
   <span class="search-icon">🔍</span>
   <input type="text" id="search" placeholder="Tìm câu tiếng Anh hoặc nghĩa tiếng Việt...">
-  <div id="search-count"></div>
+  <div id="search-count" style="margin-top: 10px; font-size: 13px; color: var(--muted); text-align: center;"></div>
 </div>
 
-<!-- TABS -->
 <div class="tabs-wrap" id="tabs">
-  <button class="tab-btn all active" data-part="-1">🌈 Tất Cả</button>
+  <button class="tab-btn active" data-part="-1">🌈 Tất Cả</button>
 </div>
 
-<!-- MAIN CONTENT -->
 <main id="main"></main>
 
-<div class="empty-state" id="empty">
-  <div class="big">🔍</div>
-  <div>Không tìm thấy câu nào phù hợp</div>
+<div class="empty-state" id="empty" style="text-align:center; padding:80px; display:none;">
+  <div style="font-size:48px">🔍</div>
+  <div style="color:var(--muted)">Không tìm thấy câu nào phù hợp</div>
 </div>
 
-<button id="back-top" title="Lên đầu trang" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button id="back-top">↑</button>
 
 <footer>
-  Làm với <span>❤️</span> dành cho các bé · 400 Câu Tiếng Anh Dạy Con
+  Làm với <span>❤️</span> dành cho các bé · 400 Câu Tiếng Anh Dạy Con<br>
+  <div class="creator-info">
+    Created by: NgocHieuPC - Mobile: 0766.39.6699 / Zalo: 0908923886
+  </div>
 </footer>
 
 <script>
-const DATA = [{"name": "Phần 1", "title": "Chào Hỏi & Sinh Hoạt", "color": "#FF6B6B", "bg": "#FFF0F0", "icon": "🌅", "topics": [{"name": "Chào hỏi", "icon": "👋", "sentences": [{"stt": 1, "en": "Good morning, honey!", "vi": "Chào buổi sáng con yêu!"}, {"stt": 2, "en": "Did you sleep well?", "vi": "Con ngủ ngon không?"}, {"stt": 3, "en": "Give me a hug!", "vi": "Ôm mẹ/ba một cái nào!"}, {"stt": 4, "en": "See you later!", "vi": "Hẹn gặp con lát nữa nhé!"}, {"stt": 5, "en": "Have a nice day!", "vi": "Chúc con một ngày vui vẻ!"}, {"stt": 6, "en": "Hello, how are you?", "vi": "Chào con, con thế nào?"}, {"stt": 7, "en": "I'm home!", "vi": "Mẹ/Ba về rồi đây!"}, {"stt": 8, "en": "Say goodbye to Grandma.", "vi": "Chào tạm biệt bà đi con."}, {"stt": 9, "en": "Wave your hand!", "vi": "Vẫy tay chào đi nào!"}, {"stt": 10, "en": "Welcome home!", "vi": "Mừng con về nhà!"}]}, {"name": "Màu sắc", "icon": "🎨", "sentences": [{"stt": 11, "en": "What color is this?", "vi": "Đây là màu gì?"}, {"stt": 12, "en": "It’s red.", "vi": "Nó màu đỏ."}, {"stt": 13, "en": "Do you like blue?", "vi": "Con có thích màu xanh dương không?"}, {"stt": 14, "en": "Find something green.", "vi": "Hãy tìm thứ gì đó màu xanh lá đi."}, {"stt": 15, "en": "The sky is blue.", "vi": "Bầu trời màu xanh."}, {"stt": 16, "en": "Look at the yellow sun.", "vi": "Nhìn ông mặt trời màu vàng kìa."}, {"stt": 17, "en": "Point to the pink flower.", "vi": "Chỉ vào bông hoa màu hồng đi."}, {"stt": 18, "en": "Mix red and white to get pink.", "vi": "Trộn đỏ và trắng sẽ ra màu hồng."}, {"stt": 19, "en": "Your shirt is orange.", "vi": "Áo của con màu cam."}, {"stt": 20, "en": "I love this purple balloon.", "vi": "Mẹ thích quả bóng màu tím này."}]}, {"name": "Ăn uống", "icon": "🍽️", "sentences": [{"stt": 21, "en": "Are you hungry?", "vi": "Con có đói không?"}, {"stt": 22, "en": "It’s time for breakfast.", "vi": "Đến giờ ăn sáng rồi."}, {"stt": 23, "en": "Sit down, please.", "vi": "Con ngồi xuống đi."}, {"stt": 24, "en": "Wash your hands before eating.", "vi": "Rửa tay trước khi ăn nhé."}, {"stt": 25, "en": "Enjoy your meal!", "vi": "Chúc con ăn ngon miệng!"}, {"stt": 26, "en": "Is it yummy?", "vi": "Có ngon không con?"}, {"stt": 27, "en": "Do you want some milk?", "vi": "Con muốn uống sữa không?"}, {"stt": 28, "en": "Careful, it’s hot!", "vi": "Cẩn thận, nóng đấy!"}, {"stt": 29, "en": "Finish your bowl.", "vi": "Ăn hết bát của con đi nhé."}, {"stt": 30, "en": "No more? Are you full?", "vi": "Không ăn nữa à? Con no rồi sao?"}]}, {"name": "Hoa quả", "icon": "🍎", "sentences": [{"stt": 31, "en": "What fruit is this?", "vi": "Đây là quả gì?"}, {"stt": 32, "en": "It’s an apple.", "vi": "Đó là một quả táo."}, {"stt": 33, "en": "Do you want a banana?", "vi": "Con muốn ăn chuối không?"}, {"stt": 34, "en": "The watermelon is sweet.", "vi": "Dưa hấu ngọt lắm."}, {"stt": 35, "en": "Peeling an orange.", "vi": "Đang bóc vỏ cam này."}, {"stt": 36, "en": "Grapes are small and round.", "vi": "Những quả nho nhỏ và tròn."}, {"stt": 37, "en": "I like strawberries.", "vi": "Mẹ/Con thích dâu tây."}, {"stt": 38, "en": "Do you want some juice?", "vi": "Con muốn uống chút nước ép không?"}, {"stt": 39, "en": "Mango is yellow and sweet.", "vi": "Xoài màu vàng và ngọt."}, {"stt": 40, "en": "Eat your fruit, honey.", "vi": "Ăn trái cây đi con yêu."}]}, {"name": "Con vật", "icon": "🐾", "sentences": [{"stt": 41, "en": "Look! A little cat.", "vi": "Nhìn kìa! Một con mèo nhỏ."}, {"stt": 42, "en": "What does the dog say?", "vi": "Con chó kêu thế nào nhỉ?"}, {"stt": 43, "en": "Woof woof!", "vi": "Gâu gâu!"}, {"stt": 44, "en": "The bird is flying.", "vi": "Con chim đang bay kìa."}, {"stt": 45, "en": "Do you like monkeys?", "vi": "Con có thích khỉ không?"}, {"stt": 46, "en": "Elephant has a long trunk.", "vi": "Con voi có cái vòi dài."}, {"stt": 47, "en": "The duck says quack.", "vi": "Con vịt kêu quạc quạc."}, {"stt": 48, "en": "Look at the butterfly.", "vi": "Nhìn con bướm kìa."}, {"stt": 49, "en": "A cow gives us milk.", "vi": "Con bò cho chúng ta sữa."}, {"stt": 50, "en": "The rabbit is jumping.", "vi": "Con thỏ đang nhảy kìa."}]}, {"name": "Đánh răng", "icon": "🦷", "sentences": [{"stt": 51, "en": "Time to brush your teeth.", "vi": "Đến giờ đánh răng rồi."}, {"stt": 52, "en": "Squeeze the toothpaste.", "vi": "Lấy kem đánh răng nào."}, {"stt": 53, "en": "Brush up and down.", "vi": "Đánh răng lên và xuống nhé."}, {"stt": 54, "en": "Rinse your mouth.", "vi": "Súc miệng đi con."}, {"stt": 55, "en": "Spit it out.", "vi": "Nhổ ra đi con."}, {"stt": 56, "en": "Your teeth are so white.", "vi": "Răng con trắng quá."}, {"stt": 57, "en": "Don't swallow the water.", "vi": "Đừng nuốt nước nhé."}, {"stt": 58, "en": "Use your toothbrush.", "vi": "Dùng bàn chải của con nào."}, {"stt": 59, "en": "Brush the back teeth too.", "vi": "Đánh cả răng hàm nữa nhé."}, {"stt": 60, "en": "All done!", "vi": "Xong rồi!"}]}, {"name": "Vệ sinh", "icon": "🧼", "sentences": [{"stt": 61, "en": "Let’s take a bath.", "vi": "Đi tắm thôi nào."}, {"stt": 62, "en": "The water is warm.", "vi": "Nước ấm lắm."}, {"stt": 63, "en": "Where is the soap?", "vi": "Xà phòng đâu rồi nhỉ?"}, {"stt": 64, "en": "Dry your hair.", "vi": "Lau khô tóc đi con."}, {"stt": 65, "en": "Wash your face.", "vi": "Rửa mặt đi nào."}, {"stt": 66, "en": "Scrub your back.", "vi": "Kỳ lưng đi con."}, {"stt": 67, "en": "Play with the bubbles.", "vi": "Chơi với bong bóng nào."}, {"stt": 68, "en": "Put on your pajamas.", "vi": "Mặc đồ ngủ vào nào."}, {"stt": 69, "en": "Use the towel.", "vi": "Dùng khăn tắm đi con."}, {"stt": 70, "en": "You smell so good.", "vi": "Con thơm quá."}]}, {"name": "Cảm xúc", "icon": "😊", "sentences": [{"stt": 71, "en": "Are you happy?", "vi": "Con có đang vui không?"}, {"stt": 72, "en": "Don’t be sad.", "vi": "Đừng buồn nhé."}, {"stt": 73, "en": "Why are you crying?", "vi": "Sao con lại khóc?"}, {"stt": 74, "en": "Are you scared?", "vi": "Con có sợ không?"}, {"stt": 75, "en": "It’s okay, I’m here.", "vi": "Ổn thôi, có mẹ/ba ở đây rồi."}, {"stt": 76, "en": "Are you angry?", "vi": "Con đang giận à?"}, {"stt": 77, "en": "Take a deep breath.", "vi": "Hít một hơi thật sâu nào."}, {"stt": 78, "en": "Give me a smile!", "vi": "Cười với mẹ/ba một cái nào!"}, {"stt": 79, "en": "You look surprised.", "vi": "Trông con có vẻ ngạc nhiên quá."}, {"stt": 80, "en": "I love you so much.", "vi": "Mẹ/Ba yêu con rất nhiều."}]}, {"name": "Giúp đỡ", "icon": "🤝", "sentences": [{"stt": 81, "en": "Can you help me?", "vi": "Con giúp mẹ/ba một tay nhé?"}, {"stt": 82, "en": "Give me the remote, please.", "vi": "Lấy giúp mẹ cái điều khiển với."}, {"stt": 83, "en": "Help me clean the table.", "vi": "Giúp mẹ lau bàn nào."}, {"stt": 84, "en": "Can you open the door?", "vi": "Con mở cửa giúp mẹ được không?"}, {"stt": 85, "en": "Pick up your toys.", "vi": "Nhặt đồ chơi của con lên."}, {"stt": 86, "en": "Put this in the bin.", "vi": "Bỏ cái này vào thùng rác đi."}, {"stt": 87, "en": "You are so helpful.", "vi": "Con thật là biết giúp đỡ."}, {"stt": 88, "en": "Hold this for me.", "vi": "Cầm cái này giúp mẹ nhé."}, {"stt": 89, "en": "Thank you for helping.", "vi": "Cảm ơn con đã giúp đỡ."}, {"stt": 90, "en": "Let's do it together.", "vi": "Mình cùng làm nhé."}]}]}, {"name": "Phần 2", "title": "Khen Ngợi & Trường Học", "color": "#00BCD4", "bg": "#E0F7FA", "icon": "🏫", "topics": [{"name": "Khen ngợi", "icon": "⭐", "sentences": [{"stt": 91, "en": "Good job!", "vi": "Làm tốt lắm!"}, {"stt": 92, "en": "Well done!", "vi": "Giỏi lắm!"}, {"stt": 93, "en": "You are so smart.", "vi": "Con thông minh quá."}, {"stt": 94, "en": "I’m proud of you.", "vi": "Mẹ/Ba tự hào về con."}, {"stt": 95, "en": "High five!", "vi": "Đập tay cái nào!"}, {"stt": 96, "en": "That’s a great idea.", "vi": "Đó là một ý tưởng tuyệt vời."}, {"stt": 97, "en": "You did it!", "vi": "Con làm được rồi!"}, {"stt": 98, "en": "Keep trying!", "vi": "Tiếp tục cố gắng nhé!"}, {"stt": 99, "en": "Beautiful drawing!", "vi": "Bức tranh đẹp quá!"}, {"stt": 100, "en": "You are a big boy/girl!", "vi": "Con đúng là một cậu bé/cô bé lớn rồi!"}]}, {"name": "Mặc đồ", "icon": "👕", "sentences": [{"stt": 101, "en": "Let’s get dressed!", "vi": "Chúng ta mặc quần áo nào!"}, {"stt": 102, "en": "Choose your t-shirt.", "vi": "Chọn áo thun của con đi."}, {"stt": 103, "en": "Put on your socks.", "vi": "Đi tất (vớ) vào nào."}, {"stt": 104, "en": "Your shorts are here.", "vi": "Quần đùi của con ở đây."}, {"stt": 105, "en": "Button up your shirt.", "vi": "Cài cúc áo của con lại."}, {"stt": 106, "en": "Zip up your jacket.", "vi": "Kéo khóa áo khoác lên."}, {"stt": 107, "en": "Where are your shoes?", "vi": "Giày của con đâu rồi?"}, {"stt": 108, "en": "Tie your shoelaces.", "vi": "Buộc dây giày đi con."}, {"stt": 109, "en": "Take off your hat.", "vi": "Cởi mũ (nón) ra nào."}, {"stt": 110, "en": "You look beautiful!", "vi": "Trông con thật xinh đẹp!"}]}, {"name": "Sức khỏe", "icon": "💊", "sentences": [{"stt": 111, "en": "Are you okay?", "vi": "Con có sao không?"}, {"stt": 112, "en": "Show me where it hurts.", "vi": "Chỉ cho mẹ/ba chỗ bị đau."}, {"stt": 113, "en": "My head hurts.", "vi": "Con bị đau đầu."}, {"stt": 114, "en": "I have a cough.", "vi": "Con bị ho."}, {"stt": 115, "en": "I have a runny nose.", "vi": "Con bị sổ mũi."}, {"stt": 116, "en": "Let’s take your temperature.", "vi": "Chúng ta đo nhiệt độ nhé."}, {"stt": 117, "en": "Drink some water.", "vi": "Uống một chút nước đi con."}, {"stt": 118, "en": "You need to rest.", "vi": "Con cần nghỉ ngơi."}, {"stt": 119, "en": "We are going to see a doctor.", "vi": "Chúng ta đi gặp bác sĩ nhé."}, {"stt": 120, "en": "You will feel better soon.", "vi": "Con sẽ sớm thấy khỏe hơn thôi."}]}, {"name": "Giờ chơi", "icon": "🎮", "sentences": [{"stt": 121, "en": "What do you want to play?", "vi": "Con muốn chơi gì?"}, {"stt": 122, "en": "Let’s play with blocks.", "vi": "Chúng mình chơi xếp hình nhé."}, {"stt": 123, "en": "It’s your turn.", "vi": "Đến lượt con đấy."}, {"stt": 124, "en": "Share the toys, please.", "vi": "Chia sẻ đồ chơi đi con."}, {"stt": 125, "en": "Don’t push!", "vi": "Đừng xô đẩy!"}, {"stt": 126, "en": "Let’s take turns.", "vi": "Chúng mình thay phiên nhau nhé."}, {"stt": 127, "en": "You missed it.", "vi": "Con trượt rồi."}, {"stt": 128, "en": "Try again!", "vi": "Thử lại lần nữa nào!"}, {"stt": 129, "en": "Can I play with you?", "vi": "Cho tớ chơi cùng với được không?"}, {"stt": 130, "en": "That was fun!", "vi": "Chơi vui quá!"}]}, {"name": "Thiên nhiên", "icon": "🌳", "sentences": [{"stt": 131, "en": "How’s the weather today?", "vi": "Thời tiết hôm nay thế nào?"}, {"stt": 132, "en": "It’s sunny.", "vi": "Trời nắng."}, {"stt": 133, "en": "It’s raining outside.", "vi": "Bên ngoài trời đang mưa."}, {"stt": 134, "en": "Look at the clouds!", "vi": "Nhìn những đám mây kìa!"}, {"stt": 135, "en": "It’s windy.", "vi": "Trời có gió."}, {"stt": 136, "en": "The sky is colorful.", "vi": "Bầu trời thật nhiều màu sắc."}, {"stt": 137, "en": "I can see a rainbow.", "vi": "Con thấy một cầu vồng."}, {"stt": 138, "en": "Look, a tree!", "vi": "Nhìn kìa, một cái cây!"}, {"stt": 139, "en": "The leaves are falling.", "vi": "Lá đang rơi."}, {"stt": 140, "en": "Nature is beautiful.", "vi": "Thiên nhiên thật đẹp."}]}, {"name": "Giờ ngủ", "icon": "🌙", "sentences": [{"stt": 141, "en": "Are you tired?", "vi": "Con có mệt không?"}, {"stt": 142, "en": "Time to go upstairs.", "vi": "Đến giờ lên lầu rồi."}, {"stt": 143, "en": "Read me a story.", "vi": "Đọc cho con nghe một câu chuyện."}, {"stt": 144, "en": "Turn off the lights.", "vi": "Tắt đèn đi con."}, {"stt": 145, "en": "Give me a goodnight kiss.", "vi": "Hôn chúc ngủ ngon mẹ/ba nào."}, {"stt": 146, "en": "Sleep well, honey.", "vi": "Ngủ ngon nhé, con yêu."}, {"stt": 147, "en": "Sleep tight.", "vi": "Ngủ thật say nhé."}, {"stt": 148, "en": "See you in the morning.", "vi": "Hẹn gặp con vào buổi sáng."}, {"stt": 149, "en": "Dream of me.", "vi": "Mơ về mẹ/ba nhé."}, {"stt": 150, "en": "Good night and sweet dreams.", "vi": "Chúc con ngủ ngon và có những giấc mơ đẹp."}]}, {"name": "Trường học", "icon": "📚", "sentences": [{"stt": 151, "en": "Where is your backpack?", "vi": "Balo của con đâu rồi?"}, {"stt": 152, "en": "Is your notebook in it?", "vi": "Có vở của con trong đó không?"}, {"stt": 153, "en": "Don’t forget your lunchbox.", "vi": "Đừng quên hộp cơm nhé."}, {"stt": 154, "en": "Have a great day at school!", "vi": "Chúc con một ngày tuyệt vời ở trường!"}, {"stt": 155, "en": "What did you learn today?", "vi": "Hôm nay con đã học gì?"}, {"stt": 156, "en": "Listen to your teacher.", "vi": "Hãy nghe lời cô giáo nhé."}, {"stt": 157, "en": "Play with your friends.", "vi": "Hãy chơi cùng các bạn nhé."}, {"stt": 158, "en": "It's time to go home.", "vi": "Đến lúc về nhà rồi."}, {"stt": 159, "en": "Put your bag away.", "vi": "Cất túi của con đi."}, {"stt": 160, "en": "Do you have homework?", "vi": "Con có bài tập về nhà không?"}]}, {"name": "Phòng khách", "icon": "🛋️", "sentences": [{"stt": 161, "en": "Sit on the sofa.", "vi": "Ngồi lên ghế sofa đi con."}, {"stt": 162, "en": "Turn down the volume.", "vi": "Cho nhỏ tiếng lại đi con."}, {"stt": 163, "en": "Don't jump on the chair.", "vi": "Đừng nhảy lên ghế nhé."}, {"stt": 164, "en": "Put the remote back.", "vi": "Cất điều khiển lại chỗ cũ đi."}, {"stt": 165, "en": "Let's watch a movie.", "vi": "Cùng xem phim nào."}, {"stt": 166, "en": "Close the curtains.", "vi": "Khép rèm lại đi con."}, {"stt": 167, "en": "Turn on the fan.", "vi": "Bật quạt lên đi con."}, {"stt": 168, "en": "It's very cozy here.", "vi": "Ở đây thật ấm cúng."}, {"stt": 169, "en": "Help me fold the clothes.", "vi": "Giúp mẹ gấp quần áo nhé."}, {"stt": 170, "en": "Keep the room tidy.", "vi": "Giữ phòng ngăn nắp nhé."}]}, {"name": "Bếp núc", "icon": "🍳", "sentences": [{"stt": 171, "en": "Breakfast is ready.", "vi": "Bữa sáng sẵn sàng rồi."}, {"stt": 172, "en": "Set the table, please.", "vi": "Dọn bàn giúp mẹ nhé."}, {"stt": 173, "en": "Don't touch the stove.", "vi": "Đừng chạm vào bếp nhé."}, {"stt": 174, "en": "It's very hot!", "vi": "Nó rất nóng đấy!"}, {"stt": 175, "en": "Put the dishes in the sink.", "vi": "Cho bát đĩa vào bồn rửa đi."}, {"stt": 176, "en": "Can you pass me a spoon?", "vi": "Con đưa mẹ cái thìa được không?"}, {"stt": 177, "en": "Let's bake a cake.", "vi": "Cùng làm bánh ngọt nào."}, {"stt": 178, "en": "Smell the cookies.", "vi": "Ngửi mùi bánh quy này."}, {"stt": 179, "en": "Wipe the table.", "vi": "Lau bàn đi con."}, {"stt": 180, "en": "Good help in the kitchen!", "vi": "Phụ bếp giỏi quá!"}]}]}, {"name": "Phần 3", "title": "Khám Phá Xung Quanh", "color": "#4CAF50", "bg": "#F1F8E9", "icon": "🌿", "topics": [{"name": "Làm vườn", "icon": "🌱", "sentences": [{"stt": 181, "en": "Let's water the plants.", "vi": "Cùng tưới cây nào."}, {"stt": 182, "en": "Look at this flower.", "vi": "Nhìn bông hoa này đi."}, {"stt": 183, "en": "Don't pick the flowers.", "vi": "Đừng hái hoa nhé."}, {"stt": 184, "en": "There is a butterfly!", "vi": "Có một con bướm kìa!"}, {"stt": 185, "en": "The grass is green.", "vi": "Cỏ màu xanh lá."}, {"stt": 186, "en": "Dig a small hole.", "vi": "Đào một cái lỗ nhỏ nào."}, {"stt": 187, "en": "Plant the seeds.", "vi": "Gieo hạt giống đi con."}, {"stt": 188, "en": "Watch it grow.", "vi": "Nhìn nó lớn lên này."}, {"stt": 189, "en": "Wear your sun hat.", "vi": "Đội mũ che nắng vào."}, {"stt": 190, "en": "Fresh air is good.", "vi": "Không khí trong lành thật tốt."}]}, {"name": "Siêu thị", "icon": "🛒", "sentences": [{"stt": 191, "en": "Stay close to the cart.", "vi": "Đi gần xe đẩy nhé."}, {"stt": 192, "en": "Don't run in the store.", "vi": "Đừng chạy trong cửa hàng."}, {"stt": 193, "en": "Do we need eggs?", "vi": "Mình có cần mua trứng không?"}, {"stt": 194, "en": "Put it in the basket.", "vi": "Cho nó vào giỏ đi con."}, {"stt": 195, "en": "One bag of apples.", "vi": "Một túi táo nhé."}, {"stt": 196, "en": "Let's wait in line.", "vi": "Cùng xếp hàng nào."}, {"stt": 197, "en": "Don't touch the glass.", "vi": "Đừng chạm vào kính nhé."}, {"stt": 198, "en": "Can you find the milk?", "vi": "Con tìm thấy sữa không?"}, {"stt": 199, "en": "Carry the small bag.", "vi": "Xách cái túi nhỏ này nhé."}, {"stt": 200, "en": "Thank the cashier.", "vi": "Cảm ơn người thu ngân đi con."}]}, {"name": "Đọc sách", "icon": "📖", "sentences": [{"stt": 201, "en": "Pick a book to read.", "vi": "Chọn một cuốn sách để đọc nào."}, {"stt": 202, "en": "Look at the pictures.", "vi": "Nhìn vào những bức tranh này."}, {"stt": 203, "en": "What happens next?", "vi": "Chuyện gì xảy ra tiếp theo nhỉ?"}, {"stt": 204, "en": "Turn the page gently.", "vi": "Lật trang sách nhẹ nhàng thôi."}, {"stt": 205, "en": "Point to the rabbit.", "vi": "Chỉ vào con thỏ đi."}, {"stt": 206, "en": "Repeat after me.", "vi": "Nhắc lại theo mẹ nhé."}, {"stt": 207, "en": "You are a good reader.", "vi": "Con đọc sách giỏi quá."}, {"stt": 208, "en": "Once upon a time...", "vi": "Ngày xửa ngày xưa..."}, {"stt": 209, "en": "The end of the story.", "vi": "Kết thúc câu chuyện rồi."}, {"stt": 210, "en": "Put the book back.", "vi": "Cất sách lại chỗ cũ nhé."}]}, {"name": "Vận động", "icon": "🏃", "sentences": [{"stt": 211, "en": "Let's go for a walk.", "vi": "Đi dạo thôi nào."}, {"stt": 212, "en": "Jump as high as you can.", "vi": "Nhảy cao hết mức có thể nào."}, {"stt": 213, "en": "Run to the tree.", "vi": "Chạy đến cái cây kia đi."}, {"stt": 214, "en": "Can you kick the ball?", "vi": "Con có đá được bóng không?"}, {"stt": 215, "en": "Follow me!", "vi": "Đi theo mẹ/ba nào!"}, {"stt": 216, "en": "Stretch your arms.", "vi": "Vươn vai (cánh tay) ra nào."}, {"stt": 217, "en": "Shake your legs.", "vi": "Rung chân đi nào."}, {"stt": 218, "en": "Dance to the music.", "vi": "Nhảy theo điệu nhạc nào."}, {"stt": 219, "en": "You are very fast!", "vi": "Con nhanh quá!"}, {"stt": 220, "en": "Catch the ball!", "vi": "Bắt lấy bóng!"}]}, {"name": "An toàn nhà", "icon": "🏠", "sentences": [{"stt": 221, "en": "Stay away from the outlet.", "vi": "Tránh xa ổ điện ra nhé."}, {"stt": 222, "en": "Don't climb on that.", "vi": "Đừng leo trèo lên đó."}, {"stt": 223, "en": "The floor is slippery.", "vi": "Sàn nhà trơn lắm đấy."}, {"stt": 224, "en": "Watch your step.", "vi": "Nhìn đường con đi nhé."}, {"stt": 225, "en": "Use the handrail.", "vi": "Vịn vào tay vịn đi con."}, {"stt": 226, "en": "Keep the door closed.", "vi": "Giữ cửa đóng nhé."}, {"stt": 227, "en": "Don't play with fire.", "vi": "Đừng nghịch lửa."}, {"stt": 228, "en": "It's dangerous!", "vi": "Nguy hiểm lắm đấy!"}, {"stt": 229, "en": "Come back here.", "vi": "Quay lại đây nào."}, {"stt": 230, "en": "Listen to my warning.", "vi": "Hãy nghe lời cảnh báo của mẹ."}]}, {"name": "Lịch sự", "icon": "🙏", "sentences": [{"stt": 241, "en": "Say please, sweetie.", "vi": "Nói \"làm ơn\" đi con yêu."}, {"stt": 242, "en": "Say thank you.", "vi": "Nói cảm ơn đi nào."}, {"stt": 243, "en": "You're welcome.", "vi": "Không có chi (đáp lại lời cảm ơn)."}, {"stt": 244, "en": "Excuse me, please.", "vi": "Xin lỗi, cho mẹ/con đi nhờ."}, {"stt": 245, "en": "I'm sorry.", "vi": "Con/mẹ xin lỗi."}, {"stt": 246, "en": "Can I have one, please?", "vi": "Cho con xin một cái được không?"}, {"stt": 247, "en": "Wait for your turn.", "vi": "Đợi đến lượt của con nhé."}, {"stt": 248, "en": "Knock on the door.", "vi": "Gõ cửa đi con."}, {"stt": 249, "en": "Share with your friends.", "vi": "Chia sẻ với các bạn nhé."}, {"stt": 250, "en": "Good manners are important.", "vi": "Phép lịch sự rất quan trọng."}]}, {"name": "Dọn dẹp", "icon": "🧹", "sentences": [{"stt": 251, "en": "Clean up your mess.", "vi": "Dọn dẹp đống bừa bãi của con đi."}, {"stt": 252, "en": "Put your toys away.", "vi": "Cất đồ chơi đi nhé."}, {"stt": 253, "en": "Hang up your coat.", "vi": "Treo áo khoác của con lên."}, {"stt": 254, "en": "Put the trash in the bin.", "vi": "Bỏ rác vào thùng đi con."}, {"stt": 255, "en": "Help me tidy up.", "vi": "Giúp mẹ dọn dẹp nhé."}, {"stt": 256, "en": "Organize your books.", "vi": "Sắp xếp lại sách của con đi."}, {"stt": 257, "en": "Sweep the floor.", "vi": "Quét nhà đi con."}, {"stt": 258, "en": "Good job cleaning!", "vi": "Con dọn dẹp giỏi quá!"}, {"stt": 259, "en": "The room is clean now.", "vi": "Căn phòng sạch rồi đấy."}, {"stt": 260, "en": "Let's keep it this way.", "vi": "Hãy giữ gìn như thế này nhé."}]}, {"name": "Giao thông", "icon": "🚗", "sentences": [{"stt": 271, "en": "Hold my hand tightly.", "vi": "Nắm chặt tay mẹ/ba nhé."}, {"stt": 272, "en": "Look both ways.", "vi": "Nhìn cả hai phía nhé."}, {"stt": 273, "en": "Wait for the green light.", "vi": "Đợi đèn xanh nhé."}, {"stt": 274, "en": "Walk on the sidewalk.", "vi": "Đi bộ trên vỉa hè nhé."}, {"stt": 275, "en": "Don't run across.", "vi": "Đừng chạy băng qua đường."}, {"stt": 276, "en": "Buckle your seatbelt.", "vi": "Thắt dây an toàn vào con."}, {"stt": 277, "en": "Sit quietly in the car.", "vi": "Ngồi yên lặng trong xe nhé."}, {"stt": 278, "en": "The bus is coming.", "vi": "Xe buýt đang đến kìa."}, {"stt": 279, "en": "Watch out for cars!", "vi": "Coi chừng ô tô kìa!"}, {"stt": 280, "en": "Safety first!", "vi": "An toàn là trên hết!"}]}, {"name": "Học tập", "icon": "✏️", "sentences": [{"stt": 291, "en": "Where is your pencil?", "vi": "Bút chì của con đâu rồi?"}, {"stt": 202, "en": "Use your eraser.", "vi": "Dùng cục tẩy của con đi."}, {"stt": 293, "en": "Draw a big circle.", "vi": "Vẽ một hình tròn lớn nào."}, {"stt": 294, "en": "Color inside the lines.", "vi": "Tô màu bên trong các đường kẻ."}, {"stt": 295, "en": "Can you write your name?", "vi": "Con có viết được tên mình không?"}, {"stt": 296, "en": "Study hard, honey.", "vi": "Học chăm chỉ nhé con yêu."}, {"stt": 297, "en": "Keep practicing.", "vi": "Tiếp tục luyện tập nhé."}, {"stt": 298, "en": "Do you understand?", "vi": "Con có hiểu không?"}, {"stt": 299, "en": "Ask me if you need help.", "vi": "Hỏi mẹ nếu con cần giúp đỡ."}, {"stt": 300, "en": "Learning is fun!", "vi": "Học tập thật vui!"}]}]}, {"name": "Phần 4", "title": "Yêu Thương & Cảm Xúc", "color": "#E91E8C", "bg": "#FDF2F8", "icon": "❤️", "topics": [{"name": "Giác quan", "icon": "👁️", "sentences": [{"stt": 301, "en": "Do you hear that?", "vi": "Con có nghe thấy gì không?"}, {"stt": 302, "en": "It smells like flowers.", "vi": "Nó có mùi thơm như hoa vậy."}, {"stt": 303, "en": "Taste this strawberry.", "vi": "Nếm thử quả dâu tây này xem."}, {"stt": 304, "en": "It feels so soft.", "vi": "Cảm giác thật mềm mại."}, {"stt": 305, "en": "Look at that bright star!", "vi": "Nhìn ngôi sao sáng kia kìa!"}, {"stt": 306, "en": "Is it too loud?", "vi": "Có bị ồn quá không con?"}, {"stt": 307, "en": "Close your eyes.", "vi": "Nhắm mắt lại đi con."}, {"stt": 308, "en": "Open your mouth.", "vi": "Há miệng ra nào."}, {"stt": 309, "en": "Can you touch your toes?", "vi": "Con có chạm được vào ngón chân không?"}, {"stt": 310, "en": "Use your ears to listen.", "vi": "Hãy dùng tai để lắng nghe nhé."}]}, {"name": "Lập kế hoạch", "icon": "📅", "sentences": [{"stt": 311, "en": "Let's go to the zoo.", "vi": "Chúng mình đi sở thú nhé."}, {"stt": 312, "en": "What should we do today?", "vi": "Hôm nay chúng ta nên làm gì nhỉ?"}, {"stt": 313, "en": "We are going on a trip.", "vi": "Chúng ta sắp đi du lịch đấy."}, {"stt": 314, "en": "Pack your suitcase.", "vi": "Xếp đồ vào vali đi con."}, {"stt": 315, "en": "First we eat, then we play.", "vi": "Đầu tiên mình ăn, sau đó mình chơi."}, {"stt": 316, "en": "Are you ready to go?", "vi": "Con sẵn sàng đi chưa?"}, {"stt": 317, "en": "It's time to leave.", "vi": "Đến lúc phải đi rồi."}, {"stt": 318, "en": "Don't forget your hat.", "vi": "Đừng quên mũ của con nhé."}, {"stt": 319, "en": "This will be fun!", "vi": "Chắc chắn sẽ vui lắm đây!"}, {"stt": 320, "en": "We have a busy day.", "vi": "Chúng ta có một ngày bận rộn đấy."}]}, {"name": "Xin phép", "icon": "🙋", "sentences": [{"stt": 331, "en": "Can I watch TV?", "vi": "Con có được xem tivi không?"}, {"stt": 332, "en": "May I go outside?", "vi": "Cho phép con ra ngoài nhé?"}, {"stt": 333, "en": "Ask your father first.", "vi": "Hỏi ba con trước đã nhé."}, {"stt": 334, "en": "Not right bây giờ.", "vi": "Không phải lúc này."}, {"stt": 335, "en": "Wait a minute.", "vi": "Đợi một lát nhé."}, {"stt": 336, "en": "Is it okay if I play?", "vi": "Con chơi có được không ạ?"}, {"stt": 337, "en": "Yes, you can.", "vi": "Được chứ, con có thể."}, {"stt": 338, "en": "No, I'm sorry.", "vi": "Không được, mẹ xin lỗi."}, {"stt": 339, "en": "Thank you for asking.", "vi": "Cảm ơn con đã xin phép."}, {"stt": 340, "en": "Be a good boy/girl.", "vi": "Hãy là một đứa trẻ ngoan nhé."}]}, {"name": "Khám phá", "icon": "🔍", "sentences": [{"stt": 351, "en": "What is inside?", "vi": "Có gì bên trong thế nhỉ?"}, {"stt": 352, "en": "Let's find out!", "vi": "Cùng tìm hiểu nào!"}, {"stt": 353, "en": "Look under the table.", "vi": "Nhìn dưới gầm bàn xem."}, {"stt": 354, "en": "It's a mystery!", "vi": "Thật là một điều bí ẩn!"}, {"stt": 355, "en": "You are a little explorer.", "vi": "Con là một nhà thám hiểm nhỏ."}, {"stt": 356, "en": "Be curious!", "vi": "Hãy luôn tò mò nhé!"}, {"stt": 357, "en": "Why does it work?", "vi": "Tại sao nó lại hoạt động nhỉ?"}, {"stt": 358, "en": "Use your imagination.", "vi": "Hãy dùng trí tưởng tượng của con."}, {"stt": 359, "en": "Discover new things.", "vi": "Khám phá những điều mới mẻ nào."}, {"stt": 360, "en": "Science is cool!", "vi": "Khoa học thật thú vị!"}]}, {"name": "Yêu thương", "icon": "💕", "sentences": [{"stt": 371, "en": "I love you to the moon.", "vi": "Mẹ yêu con vô tận."}, {"stt": 372, "en": "You are my sunshine.", "vi": "Con là ánh nắng của mẹ."}, {"stt": 373, "en": "Give me a big hug.", "vi": "Ôm mẹ một cái thật chặt nào."}, {"stt": 374, "en": "A kiss for you.", "vi": "Một nụ hôn cho con này."}, {"stt": 375, "en": "I'm always here for you.", "vi": "Mẹ luôn ở đây bên con."}, {"stt": 376, "en": "You make me happy.", "vi": "Con làm mẹ thấy hạnh phúc."}, {"stt": 377, "en": "You are very special.", "vi": "Con rất đặc biệt."}, {"stt": 378, "en": "Hold my hand.", "vi": "Nắm lấy tay mẹ nào."}, {"stt": 379, "en": "Let's cuddle.", "vi": "Cùng ôm ấp nhau nào."}, {"stt": 380, "en": "Sweet dreams, my love.", "vi": "Ngủ ngon nhé, tình yêu của mẹ."}]}, {"name": "Sinh nhật", "icon": "🎂", "sentences": [{"stt": 381, "en": "Happy birthday to you!", "vi": "Chúc mừng sinh nhật con!"}, {"stt": 382, "en": "Blow out the candles.", "vi": "Thổi nến đi con."}, {"stt": 383, "en": "Make a wish!", "vi": "Ước một điều đi nào!"}, {"stt": 384, "en": "Open your presents.", "vi": "Mở quà của con đi."}, {"stt": 385, "en": "Do you like your cake?", "vi": "Con có thích bánh của con không?"}, {"stt": 386, "en": "You are one year older!", "vi": "Con đã lớn thêm một tuổi rồi!"}, {"stt": 387, "en": "Let's sing a song.", "vi": "Cùng hát một bài nào."}, {"stt": 388, "en": "Have a party!", "vi": "Tổ chức tiệc thôi nào!"}, {"stt": 389, "en": "All your friends are here.", "vi": "Các bạn của con đều ở đây."}, {"stt": 390, "en": "Such a happy day!", "vi": "Thật là một ngày hạnh phúc!"}]}, {"name": "Chia tay", "icon": "🤗", "sentences": [{"stt": 391, "en": "Goodbye! See you soon.", "vi": "Tạm biệt! Hẹn gặp lại sớm nhé."}, {"stt": 392, "en": "Have a safe trip.", "vi": "Chúc con thượng lộ bình an."}, {"stt": 393, "en": "Call me later.", "vi": "Gọi cho mẹ sau nhé."}, {"stt": 394, "en": "Give me a wave.", "vi": "Vẫy tay chào mẹ nào."}, {"stt": 395, "en": "I will miss you.", "vi": "Mẹ sẽ nhớ con lắm."}, {"stt": 396, "en": "Take care!", "vi": "Bảo trọng nhé con!"}, {"stt": 397, "en": "See you tomorrow morning.", "vi": "Hẹn gặp con vào sáng mai."}, {"stt": 398, "en": "Don't be late.", "vi": "Đừng về muộn nhé."}, {"stt": 399, "en": "Sleep well, bye bye!", "vi": "Ngủ ngon nhé, tạm biệt!"}, {"stt": 400, "en": "I love you, bye!", "vi": "Mẹ yêu con, tạm biệt!"}]}]}];
+// --- GIỮ NGUYÊN BỘ DỮ LIỆU GỐC 400 CÂU ---
+const DATA = [
+  {"name": "Phần 1", "title": "Chào Hỏi & Sinh Hoạt", "color": "#FF6B6B", "icon": "🌅", "topics": [
+    {"name": "Chào hỏi", "icon": "👋", "sentences": [{"stt": 1, "en": "Good morning, honey!", "vi": "Chào buổi sáng con yêu!"}, {"stt": 2, "en": "Did you sleep well?", "vi": "Con ngủ ngon không?"}, {"stt": 3, "en": "Give me a hug!", "vi": "Ôm mẹ/ba một cái nào!"}, {"stt": 4, "en": "See you later!", "vi": "Hẹn gặp con lát nữa nhé!"}, {"stt": 5, "en": "Have a nice day!", "vi": "Chúc con một ngày vui vẻ!"}, {"stt": 6, "en": "Hello, how are you?", "vi": "Chào con, con thế nào?"}, {"stt": 7, "en": "I'm home!", "vi": "Mẹ/Ba về rồi đây!"}, {"stt": 8, "en": "Say goodbye to Grandma.", "vi": "Chào tạm biệt bà đi con."}, {"stt": 9, "en": "Wave your hand!", "vi": "Vẫy tay chào đi nào!"}, {"stt": 10, "en": "Welcome home!", "vi": "Mừng con về nhà!"}]},
+    {"name": "Màu sắc", "icon": "🎨", "sentences": [{"stt": 11, "en": "What color is this?", "vi": "Đây là màu gì?"}, {"stt": 12, "en": "It’s red.", "vi": "Nó màu đỏ."}, {"stt": 13, "en": "Do you like blue?", "vi": "Con có thích màu xanh dương không?"}, {"stt": 14, "en": "Find something green.", "vi": "Hãy tìm thứ gì đó màu xanh lá đi."}, {"stt": 15, "en": "The sky is blue.", "vi": "Bầu trời màu xanh."}, {"stt": 16, "en": "Look at the yellow sun.", "vi": "Nhìn ông mặt trời màu vàng kìa."}, {"stt": 17, "en": "Point to the pink flower.", "vi": "Chỉ vào bông hoa màu hồng đi."}, {"stt": 18, "en": "Mix red and white to get pink.", "vi": "Trộn đỏ và trắng sẽ ra màu hồng."}, {"stt": 19, "en": "Your shirt is orange.", "vi": "Áo của con màu cam."}, {"stt": 20, "en": "I love this purple balloon.", "vi": "Mẹ thích quả bóng màu tím này."}]},
+    {"name": "Ăn uống", "icon": "🍽️", "sentences": [{"stt": 21, "en": "Are you hungry?", "vi": "Con có đói không?"}, {"stt": 22, "en": "It’s time for breakfast.", "vi": "Đến giờ ăn sáng rồi."}, {"stt": 23, "en": "Sit down, please.", "vi": "Con ngồi xuống đi."}, {"stt": 24, "en": "Wash your hands before eating.", "vi": "Rửa tay trước khi ăn nhé."}, {"stt": 25, "en": "Enjoy your meal!", "vi": "Chúc con ăn ngon miệng!"}, {"stt": 26, "en": "Is it yummy?", "vi": "Có ngon không con?"}, {"stt": 27, "en": "Do you want some milk?", "vi": "Con muốn uống sữa không?"}, {"stt": 28, "en": "Careful, it’s hot!", "vi": "Cẩn thận, nóng đấy!"}, {"stt": 29, "en": "Finish your bowl.", "vi": "Ăn hết bát của con đi nhé."}, {"stt": 30, "en": "No more? Are you full?", "vi": "Không ăn nữa à? Con no rồi sao?"}]},
+    {"name": "Hoa quả", "icon": "🍎", "sentences": [{"stt": 31, "en": "What fruit is this?", "vi": "Đây là quả gì?"}, {"stt": 32, "en": "It’s an apple.", "vi": "Đó là một quả táo."}, {"stt": 33, "en": "Do you want a banana?", "vi": "Con muốn ăn chuối không?"}, {"stt": 34, "en": "The watermelon is sweet.", "vi": "Dưa hấu ngọt lắm."}, {"stt": 35, "en": "Peeling an orange.", "vi": "Đang bóc vỏ cam này."}, {"stt": 36, "en": "Grapes are small and round.", "vi": "Những quả nho nhỏ và tròn."}, {"stt": 37, "en": "I like strawberries.", "vi": "Mẹ/Con thích dâu tây."}, {"stt": 38, "en": "Do you want some juice?", "vi": "Con muốn uống chút nước ép không?"}, {"stt": 39, "en": "Mango is yellow and sweet.", "vi": "Xoài màu vàng và ngọt."}, {"stt": 40, "en": "Eat your fruit, honey.", "vi": "Ăn trái cây đi con yêu."}]},
+    {"name": "Con vật", "icon": "🐾", "sentences": [{"stt": 41, "en": "Look! A little cat.", "vi": "Nhìn kìa! Một con mèo nhỏ."}, {"stt": 42, "en": "What does the dog say?", "vi": "Con chó kêu thế nào nhỉ?"}, {"stt": 43, "en": "Woof woof!", "vi": "Gâu gâu!"}, {"stt": 44, "en": "The bird is flying.", "vi": "Con chim đang bay kìa."}, {"stt": 45, "en": "Do you like monkeys?", "vi": "Con có thích khỉ không?"}, {"stt": 46, "en": "Elephant has a long trunk.", "vi": "Con voi có cái vòi dài."}, {"stt": 47, "en": "The duck says quack.", "vi": "Con vịt kêu quạc quạc."}, {"stt": 48, "en": "Look at the butterfly.", "vi": "Nhìn con bướm kìa."}, {"stt": 49, "en": "A cow gives us milk.", "vi": "Con bò cho chúng ta sữa."}, {"stt": 50, "en": "The rabbit is jumping.", "vi": "Con thỏ đang nhảy kìa."}]},
+    {"name": "Đánh răng", "icon": "🦷", "sentences": [{"stt": 51, "en": "Time to brush your teeth.", "vi": "Đến giờ đánh răng rồi."}, {"stt": 52, "en": "Squeeze the toothpaste.", "vi": "Lấy kem đánh răng nào."}, {"stt": 53, "en": "Brush up and down.", "vi": "Đánh răng lên và xuống nhé."}, {"stt": 54, "en": "Rinse your mouth.", "vi": "Súc miệng đi con."}, {"stt": 55, "en": "Spit it out.", "vi": "Nhổ ra đi con."}, {"stt": 56, "en": "Your teeth are so white.", "vi": "Răng con trắng quá."}, {"stt": 57, "en": "Don't swallow the water.", "vi": "Đừng nuốt nước nhé."}, {"stt": 58, "en": "Use your toothbrush.", "vi": "Dùng bàn chải của con nào."}, {"stt": 59, "en": "Brush the back teeth too.", "vi": "Đánh cả răng hàm nữa nhé."}, {"stt": 60, "en": "All done!", "vi": "Xong rồi!"}]},
+    {"name": "Vệ sinh", "icon": "🧼", "sentences": [{"stt": 61, "en": "Let’s take a bath.", "vi": "Đi tắm thôi nào."}, {"stt": 62, "en": "The water is warm.", "vi": "Nước ấm lắm."}, {"stt": 63, "en": "Where is the soap?", "vi": "Xà phòng đâu rồi nhỉ?"}, {"stt": 64, "en": "Dry your hair.", "vi": "Lau khô tóc đi con."}, {"stt": 65, "en": "Wash your face.", "vi": "Rửa mặt đi nào."}, {"stt": 66, "en": "Scrub your back.", "vi": "Kỳ lưng đi con."}, {"stt": 67, "en": "Play with the bubbles.", "vi": "Chơi với bong bóng nào."}, {"stt": 68, "en": "Put on your pajamas.", "vi": "Mặc đồ ngủ vào nào."}, {"stt": 69, "en": "Use the towel.", "vi": "Dùng khăn tắm đi con."}, {"stt": 70, "en": "You smell so good.", "vi": "Con thơm quá."}]},
+    {"name": "Cảm xúc", "icon": "😊", "sentences": [{"stt": 71, "en": "Are you happy?", "vi": "Con có đang vui không?"}, {"stt": 72, "en": "Don’t be sad.", "vi": "Đừng buồn nhé."}, {"stt": 73, "en": "Why are you crying?", "vi": "Sao con lại khóc?"}, {"stt": 74, "en": "Are you scared?", "vi": "Con có sợ không?"}, {"stt": 75, "en": "It’s okay, I’m here.", "vi": "Ổn thôi, có mẹ/ba ở đây rồi."}, {"stt": 76, "en": "Are you angry?", "vi": "Con đang giận à?"}, {"stt": 77, "en": "Take a deep breath.", "vi": "Hít một hơi thật sâu nào."}, {"stt": 78, "en": "Give me a smile!", "vi": "Cười với mẹ/ba một cái nào!"}, {"stt": 79, "en": "You look surprised.", "vi": "Trông con có vẻ ngạc nhiên quá."}, {"stt": 80, "en": "I love you so much.", "vi": "Mẹ/Ba yêu con rất nhiều."}]},
+    {"name": "Giúp đỡ", "icon": "🤝", "sentences": [{"stt": 81, "en": "Can you help me?", "vi": "Con giúp mẹ/ba một tay nhé?"}, {"stt": 82, "en": "Give me the remote, please.", "vi": "Lấy giúp mẹ cái điều khiển với."}, {"stt": 83, "en": "Help me clean the table.", "vi": "Giúp mẹ lau bàn nào."}, {"stt": 84, "en": "Can you open the door?", "vi": "Con mở cửa giúp mẹ được không?"}, {"stt": 85, "en": "Pick up your toys.", "vi": "Nhặt đồ chơi của con lên."}, {"stt": 86, "en": "Put this in the bin.", "vi": "Bỏ cái này vào thùng rác đi."}, {"stt": 87, "en": "You are so helpful.", "vi": "Con thật là biết giúp đỡ."}, {"stt": 88, "en": "Hold this for me.", "vi": "Cầm cái này giúp mẹ nhé."}, {"stt": 89, "en": "Thank you for helping.", "vi": "Cảm ơn con đã giúp đỡ."}, {"stt": 90, "en": "Let's do it together.", "vi": "Mình cùng làm nhé."}]}
+  ]},
+  {"name": "Phần 2", "title": "Khen Ngợi & Trường Học", "color": "#00BCD4", "icon": "🏫", "topics": [
+    {"name": "Khen ngợi", "icon": "⭐", "sentences": [{"stt": 91, "en": "Good job!", "vi": "Làm tốt lắm!"}, {"stt": 92, "en": "Well done!", "vi": "Giỏi lắm!"}, {"stt": 93, "en": "You are so smart.", "vi": "Con thông minh quá."}, {"stt": 94, "en": "I’m proud of you.", "vi": "Mẹ/Ba tự hào về con."}, {"stt": 95, "en": "High five!", "vi": "Đập tay cái nào!"}, {"stt": 96, "en": "That’s a great idea.", "vi": "Đó là một ý tưởng tuyệt vời."}, {"stt": 97, "en": "You did it!", "vi": "Con làm được rồi!"}, {"stt": 98, "en": "Keep trying!", "vi": "Tiếp tục cố gắng nhé!"}, {"stt": 99, "en": "Beautiful drawing!", "vi": "Bức tranh đẹp quá!"}, {"stt": 100, "en": "You are a big boy/girl!", "vi": "Con đúng là một cậu bé/cô bé lớn rồi!"}]},
+    {"name": "Mặc đồ", "icon": "👕", "sentences": [{"stt": 101, "en": "Let’s get dressed!", "vi": "Chúng ta mặc quần áo nào!"}, {"stt": 102, "en": "Choose your t-shirt.", "vi": "Chọn áo thun của con đi."}, {"stt": 103, "en": "Put on your socks.", "vi": "Đi tất (vớ) vào nào."}, {"stt": 104, "en": "Your shorts are here.", "vi": "Quần đùi của con ở đây."}, {"stt": 105, "en": "Button up your shirt.", "vi": "Cài cúc áo của con lại."}, {"stt": 106, "en": "Zip up your jacket.", "vi": "Kéo khóa áo khoác lên."}, {"stt": 107, "en": "Where are your shoes?", "vi": "Giày của con đâu rồi?"}, {"stt": 108, "en": "Tie your shoelaces.", "vi": "Buộc dây giày đi con."}, {"stt": 109, "en": "Take off your hat.", "vi": "Cởi mũ (nón) ra nào."}, {"stt": 110, "en": "You look beautiful!", "vi": "Trông con thật xinh đẹp!"}]},
+    {"name": "Sức khỏe", "icon": "💊", "sentences": [{"stt": 111, "en": "Are you okay?", "vi": "Con có sao không?"}, {"stt": 112, "en": "Show me where it hurts.", "vi": "Chỉ cho mẹ/ba chỗ bị đau."}, {"stt": 113, "en": "My head hurts.", "vi": "Con bị đau đầu."}, {"stt": 114, "en": "I have a cough.", "vi": "Con bị ho."}, {"stt": 115, "en": "I have a runny nose.", "vi": "Con bị sổ mũi."}, {"stt": 116, "en": "Let’s take your temperature.", "vi": "Chúng ta đo nhiệt độ nhé."}, {"stt": 117, "en": "Drink some water.", "vi": "Uống một chút nước đi con."}, {"stt": 118, "en": "You need to rest.", "vi": "Con cần nghỉ ngơi."}, {"stt": 119, "en": "We are going to see a doctor.", "vi": "Chúng ta đi gặp bác sĩ nhé."}, {"stt": 120, "en": "You will feel better soon.", "vi": "Con sẽ sớm thấy khỏe hơn thôi."}]},
+    {"name": "Giờ chơi", "icon": "🎮", "sentences": [{"stt": 121, "en": "What do you want to play?", "vi": "Con muốn chơi gì?"}, {"stt": 122, "en": "Let’s play with blocks.", "vi": "Chúng mình chơi xếp hình nhé."}, {"stt": 123, "en": "It’s your turn.", "vi": "Đến lượt con đấy."}, {"stt": 124, "en": "Share the toys, please.", "vi": "Chia sẻ đồ chơi đi con."}, {"stt": 125, "en": "Don’t push!", "vi": "Đừng xô đẩy!"}, {"stt": 126, "en": "Let’s take turns.", "vi": "Chúng mình thay phiên nhau nhé."}, {"stt": 127, "en": "You missed it.", "vi": "Con trượt rồi."}, {"stt": 128, "en": "Try again!", "vi": "Thử lại lần nữa nào!"}, {"stt": 129, "en": "Can I play with you?", "vi": "Cho tớ chơi cùng với được không?"}, {"stt": 130, "en": "That was fun!", "vi": "Chơi vui quá!"}]},
+    {"name": "Thiên nhiên", "icon": "🌳", "sentences": [{"stt": 131, "en": "How’s the weather today?", "vi": "Thời tiết hôm nay thế nào?"}, {"stt": 132, "en": "It’s sunny.", "vi": "Trời nắng."}, {"stt": 133, "en": "It’s raining outside.", "vi": "Bên ngoài trời đang mưa."}, {"stt": 134, "en": "Look at the clouds!", "vi": "Nhìn những đám mây kìa!"}, {"stt": 135, "en": "It’s windy.", "vi": "Trời có gió."}, {"stt": 136, "en": "The sky is colorful.", "vi": "Bầu trời thật nhiều màu sắc."}, {"stt": 137, "en": "I can see a rainbow.", "vi": "Con thấy một cầu vồng."}, {"stt": 138, "en": "Look, a tree!", "vi": "Nhìn kìa, một cái cây!"}, {"stt": 139, "en": "The leaves are falling.", "vi": "Lá đang rơi."}, {"stt": 140, "en": "Nature is beautiful.", "vi": "Thiên nhiên thật đẹp."}]},
+    {"name": "Giờ ngủ", "icon": "🌙", "sentences": [{"stt": 141, "en": "Are you tired?", "vi": "Con có mệt không?"}, {"stt": 142, "en": "Time to go upstairs.", "vi": "Đến giờ lên lầu rồi."}, {"stt": 143, "en": "Read me a story.", "vi": "Đọc cho con nghe một câu chuyện."}, {"stt": 144, "en": "Turn off the lights.", "vi": "Tắt đèn đi con."}, {"stt": 145, "en": "Give me a goodnight kiss.", "vi": "Hôn chúc ngủ ngon mẹ/ba nào."}, {"stt": 146, "en": "Sleep well, honey.", "vi": "Ngủ ngon nhé, con yêu."}, {"stt": 147, "en": "Sleep tight.", "vi": "Ngủ thật say nhé."}, {"stt": 148, "en": "See you in the morning.", "vi": "Hẹn gặp con vào buổi sáng."}, {"stt": 149, "en": "Dream of me.", "vi": "Mơ về mẹ/ba nhé."}, {"stt": 150, "en": "Good night and sweet dreams.", "vi": "Chúc con ngủ ngon và có những giấc mơ đẹp."}]},
+    {"name": "Trường học", "icon": "📚", "sentences": [{"stt": 151, "en": "Where is your backpack?", "vi": "Balo của con đâu rồi?"}, {"stt": 152, "en": "Is your notebook in it?", "vi": "Có vở của con trong đó không?"}, {"stt": 153, "en": "Don’t forget your lunchbox.", "vi": "Đừng quên hộp cơm nhé."}, {"stt": 154, "en": "Have a great day at school!", "vi": "Chúc con một ngày tuyệt vời ở trường!"}, {"stt": 155, "en": "What did you learn today?", "vi": "Hôm nay con đã học gì?"}, {"stt": 156, "en": "Listen to your teacher.", "vi": "Hãy nghe lời cô giáo nhé."}, {"stt": 157, "en": "Play with your friends.", "vi": "Hãy chơi cùng các bạn nhé."}, {"stt": 158, "en": "It's time to go home.", "vi": "Đến lúc về nhà rồi."}, {"stt": 159, "en": "Put your bag away.", "vi": "Cất túi của con đi."}, {"stt": 160, "en": "Do you have homework?", "vi": "Con có bài tập về nhà không?"}]},
+    {"name": "Phòng khách", "icon": "🛋️", "sentences": [{"stt": 161, "en": "Sit on the sofa.", "vi": "Ngồi lên ghế sofa đi con."}, {"stt": 162, "en": "Turn down the volume.", "vi": "Cho nhỏ tiếng lại đi con."}, {"stt": 163, "en": "Don't jump on the chair.", "vi": "Đừng nhảy lên ghế nhé."}, {"stt": 164, "en": "Put the remote back.", "vi": "Cất điều khiển lại chỗ cũ đi."}, {"stt": 165, "en": "Let's watch a movie.", "vi": "Cùng xem phim nào."}, {"stt": 166, "en": "Close the curtains.", "vi": "Khép rèm lại đi con."}, {"stt": 167, "en": "Turn on the fan.", "vi": "Bật quạt lên đi con."}, {"stt": 168, "en": "It's very cozy here.", "vi": "Ở đây thật ấm cúng."}, {"stt": 169, "en": "Help me fold the clothes.", "vi": "Giúp mẹ gấp quần áo nhé."}, {"stt": 170, "en": "Keep the room tidy.", "vi": "Giữ phòng ngăn nắp nhé."}]},
+    {"name": "Bếp núc", "icon": "🍳", "sentences": [{"stt": 171, "en": "Breakfast is ready.", "vi": "Bữa sáng sẵn sàng rồi."}, {"stt": 172, "en": "Set the table, please.", "vi": "Dọn bàn giúp mẹ nhé."}, {"stt": 173, "en": "Don't touch the stove.", "vi": "Đừng chạm vào bếp nhé."}, {"stt": 174, "en": "It's very hot!", "vi": "Nó rất nóng đấy!"}, {"stt": 175, "en": "Put the dishes in the sink.", "vi": "Cho bát đĩa vào bồn rửa đi."}, {"stt": 176, "en": "Can you pass me a spoon?", "vi": "Con đưa mẹ cái thìa được không?"}, {"stt": 177, "en": "Let's bake a cake.", "vi": "Cùng làm bánh ngọt nào."}, {"stt": 178, "en": "Smell the cookies.", "vi": "Ngửi mùi bánh quy này."}, {"stt": 179, "en": "Wipe the table.", "vi": "Lau bàn đi con."}, {"stt": 180, "en": "Good help in the kitchen!", "vi": "Phụ bếp giỏi quá!"}]}
+  ]},
+  {"name": "Phần 3", "title": "Khám Phá Xung Quanh", "color": "#4CAF50", "icon": "🌿", "topics": [
+    {"name": "Làm vườn", "icon": "🌱", "sentences": [{"stt": 181, "en": "Let's water the plants.", "vi": "Cùng tưới cây nào."}, {"stt": 182, "en": "Look at this flower.", "vi": "Nhìn bông hoa này đi."}, {"stt": 183, "en": "Don't pick the flowers.", "vi": "Đừng hái hoa nhé."}, {"stt": 184, "en": "There is a butterfly!", "vi": "Có một con bướm kìa!"}, {"stt": 185, "en": "The grass is green.", "vi": "Cỏ màu xanh lá."}, {"stt": 186, "en": "Dig a small hole.", "vi": "Đào một cái lỗ nhỏ nào."}, {"stt": 187, "en": "Plant the seeds.", "vi": "Gieo hạt giống đi con."}, {"stt": 188, "en": "Watch it grow.", "vi": "Nhìn nó lớn lên này."}, {"stt": 189, "en": "Wear your sun hat.", "vi": "Đội mũ che nắng vào."}, {"stt": 190, "en": "Fresh air is good.", "vi": "Không khí trong lành thật tốt."}]},
+    {"name": "Siêu thị", "icon": "🛒", "sentences": [{"stt": 191, "en": "Stay close to the cart.", "vi": "Đi gần xe đẩy nhé."}, {"stt": 192, "en": "Don't run in the store.", "vi": "Đừng chạy trong cửa hàng."}, {"stt": 193, "en": "Do we need eggs?", "vi": "Mình có cần mua trứng không?"}, {"stt": 194, "en": "Put it in the basket.", "vi": "Cho nó vào giỏ đi con."}, {"stt": 195, "en": "One bag of apples.", "vi": "Một túi táo nhé."}, {"stt": 196, "en": "Let's wait in line.", "vi": "Cùng xếp hàng nào."}, {"stt": 197, "en": "Don't touch the glass.", "vi": "Đừng chạm vào kính nhé."}, {"stt": 198, "en": "Can you find the milk?", "vi": "Con tìm thấy sữa không?"}, {"stt": 199, "en": "Carry the small bag.", "vi": "Xách cái túi nhỏ này nhé."}, {"stt": 200, "en": "Thank the cashier.", "vi": "Cảm ơn người thu ngân đi con."}]},
+    {"name": "Đọc sách", "icon": "📖", "sentences": [{"stt": 201, "en": "Pick a book to read.", "vi": "Chọn một cuốn sách để đọc nào."}, {"stt": 202, "en": "Look at the pictures.", "vi": "Nhìn vào những bức tranh này."}, {"stt": 203, "en": "What happens next?", "vi": "Chuyện gì xảy ra tiếp theo nhỉ?"}, {"stt": 204, "en": "Turn the page gently.", "vi": "Lật trang sách nhẹ nhàng thôi."}, {"stt": 205, "en": "Point to the rabbit.", "vi": "Chỉ vào con thỏ đi."}, {"stt": 206, "en": "Repeat after me.", "vi": "Nhắc lại theo mẹ nhé."}, {"stt": 207, "en": "You are a good reader.", "vi": "Con đọc sách giỏi quá."}, {"stt": 208, "en": "Once upon a time...", "vi": "Ngày xửa ngày xưa..."}, {"stt": 209, "en": "The end of the story.", "vi": "Kết thúc câu chuyện rồi."}, {"stt": 210, "en": "Put the book back.", "vi": "Cất sách lại chỗ cũ nhé."}]},
+    {"name": "Vận động", "icon": "🏃", "sentences": [{"stt": 211, "en": "Let's go for a walk.", "vi": "Đi dạo thôi nào."}, {"stt": 212, "en": "Jump as high as you can.", "vi": "Nhảy cao hết mức có thể nào."}, {"stt": 213, "en": "Run to the tree.", "vi": "Chạy đến cái cây kia đi."}, {"stt": 214, "en": "Can you kick the ball?", "vi": "Con có đá được bóng không?"}, {"stt": 215, "en": "Follow me!", "vi": "Đi theo mẹ/ba nào!"}, {"stt": 216, "en": "Stretch your arms.", "vi": "Vươn vai (cánh tay) ra nào."}, {"stt": 217, "en": "Shake your legs.", "vi": "Rung chân đi nào."}, {"stt": 218, "en": "Dance to the music.", "vi": "Nhảy theo điệu nhạc nào."}, {"stt": 219, "en": "You are very fast!", "vi": "Con nhanh quá!"}, {"stt": 220, "en": "Catch the ball!", "vi": "Bắt lấy bóng!"}]},
+    {"name": "An toàn nhà", "icon": "🏠", "sentences": [{"stt": 221, "en": "Stay away from the outlet.", "vi": "Tránh xa ổ điện ra nhé."}, {"stt": 222, "en": "Don't climb on that.", "vi": "Đừng leo trèo lên đó."}, {"stt": 223, "en": "The floor is slippery.", "vi": "Sàn nhà trơn lắm đấy."}, {"stt": 224, "en": "Watch your step.", "vi": "Nhìn đường con đi nhé."}, {"stt": 225, "en": "Use the handrail.", "vi": "Vịn vào tay vịn đi con."}, {"stt": 226, "en": "Keep the door closed.", "vi": "Giữ cửa đóng nhé."}, {"stt": 227, "en": "Don't play with fire.", "vi": "Đừng nghịch lửa."}, {"stt": 228, "en": "It's dangerous!", "vi": "Nguy hiểm lắm đấy!"}, {"stt": 229, "en": "Come back here.", "vi": "Quay lại đây nào."}, {"stt": 230, "en": "Listen to my warning.", "vi": "Hãy nghe lời cảnh báo của mẹ."}]},
+    {"name": "Lịch sự", "icon": "🙏", "sentences": [{"stt": 241, "en": "Say please, sweetie.", "vi": "Nói \"làm ơn\" đi con yêu."}, {"stt": 242, "en": "Say thank you.", "vi": "Nói cảm ơn đi nào."}, {"stt": 243, "en": "You're welcome.", "vi": "Không có chi (đáp lại lời cảm ơn)."}, {"stt": 244, "en": "Excuse me, please.", "vi": "Xin lỗi, cho mẹ/con đi nhờ."}, {"stt": 245, "en": "I'm sorry.", "vi": "Con/mẹ xin lỗi."}, {"stt": 246, "en": "Can I have one, please?", "vi": "Cho con xin một cái được không?"}, {"stt": 247, "en": "Wait for your turn.", "vi": "Đợi đến lượt của con nhé."}, {"stt": 248, "en": "Knock on the door.", "vi": "Gõ cửa đi con."}, {"stt": 249, "en": "Share with your friends.", "vi": "Chia sẻ với các bạn nhé."}, {"stt": 250, "en": "Good manners are important.", "vi": "Phép lịch sự rất quan trọng."}]},
+    {"name": "Dọn dẹp", "icon": "🧹", "sentences": [{"stt": 251, "en": "Clean up your mess.", "vi": "Dọn dẹp đống bừa bãi của con đi."}, {"stt": 252, "en": "Put your toys away.", "vi": "Cất đồ chơi đi nhé."}, {"stt": 253, "en": "Hang up your coat.", "vi": "Treo áo khoác của con lên."}, {"stt": 254, "en": "Put the trash in the bin.", "vi": "Bỏ rác vào thùng đi con."}, {"stt": 255, "en": "Help me tidy up.", "vi": "Giúp mẹ dọn dẹp nhé."}, {"stt": 256, "en": "Organize your books.", "vi": "Sắp xếp lại sách của con đi."}, {"stt": 257, "en": "Sweep the floor.", "vi": "Quét nhà đi con."}, {"stt": 258, "en": "Good job cleaning!", "vi": "Con dọn dẹp giỏi quá!"}, {"stt": 259, "en": "The room is clean now.", "vi": "Căn phòng sạch rồi đấy."}, {"stt": 260, "en": "Let's keep it this way.", "vi": "Hãy giữ gìn như thế này nhé."}]},
+    {"name": "Giao thông", "icon": "🚗", "sentences": [{"stt": 271, "en": "Hold my hand tightly.", "vi": "Nắm chặt tay mẹ/ba nhé."}, {"stt": 272, "en": "Look both ways.", "vi": "Nhìn cả hai phía nhé."}, {"stt": 273, "en": "Wait for the green light.", "vi": "Đợi đèn xanh nhé."}, {"stt": 274, "en": "Walk on the sidewalk.", "vi": "Đi bộ trên vỉa hè nhé."}, {"stt": 275, "en": "Don't run across.", "vi": "Đừng chạy băng qua đường."}, {"stt": 276, "en": "Buckle your seatbelt.", "vi": "Thắt dây an toàn vào con."}, {"stt": 277, "en": "Sit quietly in the car.", "vi": "Ngồi yên lặng trong xe nhé."}, {"stt": 278, "en": "The bus is coming.", "vi": "Xe buýt đang đến kìa."}, {"stt": 279, "en": "Watch out for cars!", "vi": "Coi chừng ô tô kìa!"}, {"stt": 280, "en": "Safety first!", "vi": "An toàn là trên hết!"}]},
+    {"name": "Học tập", "icon": "✏️", "sentences": [{"stt": 291, "en": "Where is your pencil?", "vi": "Bút chì của con đâu rồi?"}, {"stt": 292, "en": "Use your eraser.", "vi": "Dùng cục tẩy của con đi."}, {"stt": 293, "en": "Draw a big circle.", "vi": "Vẽ một hình tròn lớn nào."}, {"stt": 294, "en": "Color inside the lines.", "vi": "Tô màu bên trong các đường kẻ."}, {"stt": 295, "en": "Can you write your name?", "vi": "Con có viết được tên mình không?"}, {"stt": 296, "en": "Study hard, honey.", "vi": "Học chăm chỉ nhé con yêu."}, {"stt": 297, "en": "Keep practicing.", "vi": "Tiếp tục luyện tập nhé."}, {"stt": 298, "en": "Do you understand?", "vi": "Con có hiểu không?"}, {"stt": 299, "en": "Ask me if you need help.", "vi": "Hỏi mẹ nếu con cần giúp đỡ."}, {"stt": 300, "en": "Learning is fun!", "vi": "Học tập thật vui!"}]}
+  ]},
+  {"name": "Phần 4", "title": "Yêu Thương & Cảm Xúc", "color": "#E91E8C", "icon": "❤️", "topics": [
+    {"name": "Giác quan", "icon": "👁️", "sentences": [{"stt": 301, "en": "Do you hear that?", "vi": "Con có nghe thấy gì không?"}, {"stt": 302, "en": "It smells like flowers.", "vi": "Nó có mùi thơm như hoa vậy."}, {"stt": 303, "en": "Taste this strawberry.", "vi": "Nếm thử quả dâu tây này xem."}, {"stt": 304, "en": "It feels so soft.", "vi": "Cảm giác thật mềm mại."}, {"stt": 305, "en": "Look at that bright star!", "vi": "Nhìn ngôi sao sáng kia kìa!"}, {"stt": 306, "en": "Is it too loud?", "vi": "Có bị ồn quá không con?"}, {"stt": 307, "en": "Close your eyes.", "vi": "Nhắm mắt lại đi con."}, {"stt": 308, "en": "Open your mouth.", "vi": "Há miệng ra nào."}, {"stt": 309, "en": "Can you touch your toes?", "vi": "Con có chạm được vào ngón chân không?"}, {"stt": 310, "en": "Use your ears to listen.", "vi": "Hãy dùng tai để lắng nghe nhé."}]},
+    {"name": "Lập kế hoạch", "icon": "📅", "sentences": [{"stt": 311, "en": "Let's go to the zoo.", "vi": "Chúng mình đi sở thú nhé."}, {"stt": 312, "en": "What should we do today?", "vi": "Hôm nay chúng ta nên làm gì nhỉ?"}, {"stt": 313, "en": "We are going on a trip.", "vi": "Chúng ta sắp đi du lịch đấy."}, {"stt": 314, "en": "Pack your suitcase.", "vi": "Xếp đồ vào vali đi con."}, {"stt": 315, "en": "First we eat, then we play.", "vi": "Đầu tiên mình ăn, sau đó mình chơi."}, {"stt": 316, "en": "Are you ready to go?", "vi": "Con sẵn sàng đi chưa?"}, {"stt": 317, "en": "It's time to leave.", "vi": "Đến lúc phải đi rồi."}, {"stt": 318, "en": "Don't forget your hat.", "vi": "Đừng quên mũ của con nhé."}, {"stt": 319, "en": "This will be fun!", "vi": "Chắc chắn sẽ vui lắm đây!"}, {"stt": 320, "en": "We have a busy day.", "vi": "Chúng ta có một ngày bận rộn đấy."}]},
+    {"name": "Xin phép", "icon": "🙋", "sentences": [{"stt": 331, "en": "Can I watch TV?", "vi": "Con có được xem tivi không?"}, {"stt": 332, "en": "May I go outside?", "vi": "Cho phép con ra ngoài nhé?"}, {"stt": 333, "en": "Ask your father first.", "vi": "Hỏi ba con trước đã nhé."}, {"stt": 334, "en": "Not right bây giờ.", "vi": "Không phải lúc này."}, {"stt": 335, "en": "Wait a minute.", "vi": "Đợi một lát nhé."}, {"stt": 336, "en": "Is it okay if I play?", "vi": "Con chơi có được không ạ?"}, {"stt": 337, "en": "Yes, you can.", "vi": "Được chứ, con có thể."}, {"stt": 338, "en": "No, I'm sorry.", "vi": "Không được, mẹ xin lỗi."}, {"stt": 339, "en": "Thank you for asking.", "vi": "Cảm ơn con đã xin phép."}, {"stt": 340, "en": "Be a good boy/girl.", "vi": "Hãy là một đứa trẻ ngoan nhé."}]},
+    {"name": "Khám phá", "icon": "🔍", "sentences": [{"stt": 351, "en": "What is inside?", "vi": "Có gì bên trong thế nhỉ?"}, {"stt": 352, "en": "Let's find out!", "vi": "Cùng tìm hiểu nào!"}, {"stt": 353, "en": "Look under the table.", "vi": "Nhìn dưới gầm bàn xem."}, {"stt": 354, "en": "It's a mystery!", "vi": "Thật là một điều bí ẩn!"}, {"stt": 355, "en": "You are a little explorer.", "vi": "Con là một nhà thám hiểm nhỏ."}, {"stt": 356, "en": "Be curious!", "vi": "Hãy luôn tò mò nhé!"}, {"stt": 357, "en": "Why does it work?", "vi": "Tại sao nó lại hoạt động nhỉ?"}, {"stt": 358, "en": "Use your imagination.", "vi": "Hãy dùng trí tưởng tượng của con."}, {"stt": 359, "en": "Discover new things.", "vi": "Khám phá những điều mới mẻ nào."}, {"stt": 360, "en": "Science is cool!", "vi": "Khoa học thật thú vị!"}]},
+    {"name": "Yêu thương", "icon": "💕", "sentences": [{"stt": 371, "en": "I love you to the moon.", "vi": "Mẹ yêu con vô tận."}, {"stt": 372, "en": "You are my sunshine.", "vi": "Con là ánh nắng của mẹ."}, {"stt": 373, "en": "Give me a big hug.", "vi": "Ôm mẹ một cái thật chặt nào."}, {"stt": 374, "en": "A kiss for you.", "vi": "Một nụ hôn cho con này."}, {"stt": 375, "en": "I'm always here for you.", "vi": "Mẹ luôn ở đây bên con."}, {"stt": 376, "en": "You make me happy.", "vi": "Con làm mẹ thấy hạnh phúc."}, {"stt": 377, "en": "You are very special.", "vi": "Con rất đặc biệt."}, {"stt": 378, "en": "Hold my hand.", "vi": "Nắm lấy tay mẹ nào."}, {"stt": 379, "en": "Let's cuddle.", "vi": "Cùng ôm ấp nhau nào."}, {"stt": 380, "en": "Sweet dreams, my love.", "vi": "Ngủ ngon nhé, tình yêu của mẹ."}]},
+    {"name": "Sinh nhật", "icon": "🎂", "sentences": [{"stt": 381, "en": "Happy birthday to you!", "vi": "Chúc mừng sinh nhật con!"}, {"stt": 382, "en": "Blow out the candles.", "vi": "Thổi nến đi con."}, {"stt": 383, "en": "Make a wish!", "vi": "Ước một điều đi nào!"}, {"stt": 384, "en": "Open your presents.", "vi": "Mở quà của con đi."}, {"stt": 385, "en": "Do you like your cake?", "vi": "Con có thích bánh của con không?"}, {"stt": 386, "en": "You are one year older!", "vi": "Con đã lớn thêm một tuổi rồi!"}, {"stt": 387, "en": "Let's sing a song.", "vi": "Cùng hát một bài nào."}, {"stt": 388, "en": "Have a party!", "vi": "Tổ chức tiệc thôi nào!"}, {"stt": 389, "en": "All your friends are here.", "vi": "Các bạn của con đều ở đây."}, {"stt": 390, "en": "Such a happy day!", "vi": "Thật là một ngày hạnh phúc!"}]},
+    {"name": "Chia tay", "icon": "🤗", "sentences": [{"stt": 391, "en": "Goodbye! See you soon.", "vi": "Tạm biệt! Hẹn gặp lại sớm nhé."}, {"stt": 392, "en": "Have a safe trip.", "vi": "Chúc con thượng lộ bình an."}, {"stt": 393, "en": "Call me later.", "vi": "Gọi cho mẹ sau nhé."}, {"stt": 394, "en": "Give me a wave.", "vi": "Vẫy tay chào mẹ nào."}, {"stt": 395, "en": "I will miss you.", "vi": "Mẹ sẽ nhớ con lắm."}, {"stt": 396, "en": "Take care!", "vi": "Bảo trọng nhé con!"}, {"stt": 397, "en": "See you tomorrow morning.", "vi": "Hẹn gặp con vào sáng mai."}, {"stt": 398, "en": "Don't be late.", "vi": "Đừng về muộn nhé."}, {"stt": 399, "en": "Sleep well, bye bye!", "vi": "Ngủ ngon nhé, tạm biệt!"}, {"stt": 400, "en": "I love you, bye!", "vi": "Mẹ yêu con, tạm biệt!"}]}
+  ]}
+];
 
 const PART_COLORS = ["#FF6B6B","#00BCD4","#4CAF50","#E91E8C"];
 const PART_GRADS = [
@@ -404,6 +257,7 @@ const PART_GRADS = [
 // --- INIT ---
 let currentPart = -1;
 let searchQ = "";
+const synth = window.speechSynthesis;
 
 function init() {
   // Bubbles
@@ -428,23 +282,35 @@ function init() {
     tabs.appendChild(btn);
   });
 
+  document.querySelector('.tab-btn.active').onclick = () => setTab(-1);
+
   render();
 
-  // Progress bar
+  // Scroll events
   window.addEventListener("scroll", () => {
     const pct = (scrollY / (document.body.scrollHeight - innerHeight)) * 100;
     document.getElementById("progress").style.width = pct + "%";
-    document.getElementById("back-top").classList.toggle("show", scrollY > 400);
+    
+    if (scrollY > 400) {
+      document.getElementById("back-top").classList.add("show");
+    } else {
+      document.getElementById("back-top").classList.remove("show");
+    }
+  });
+
+  // Back to top fix
+  document.getElementById("back-top").addEventListener("click", () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
   });
 }
 
 function setTab(idx) {
   currentPart = idx;
   document.querySelectorAll(".tab-btn").forEach(b => {
-    b.classList.toggle("active", parseInt(b.dataset.part) === idx);
+    b.classList.toggle("active", parseInt(b.dataset.part || -1) === idx);
   });
   render();
-  scrollTo({top:0, behavior:"smooth"});
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
 document.getElementById("search").addEventListener("input", e => {
@@ -456,6 +322,19 @@ function highlight(text, q) {
   if (!q) return text;
   const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + ")", "gi");
   return text.replace(re, "<mark class=\"hl\">$1</mark>");
+}
+
+function speak(btn, text) {
+  if (synth.speaking) synth.cancel();
+  
+  btn.classList.add("speaking");
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = 0.8;
+  
+  utter.onend = () => btn.classList.remove("speaking");
+  utter.onerror = () => btn.classList.remove("speaking");
+  synth.speak(utter);
 }
 
 function render() {
@@ -476,7 +355,6 @@ function render() {
     const section = document.createElement("div");
     section.className = "part-section";
 
-    // Part header
     let partVisible = 0;
     let topicsHtml = "";
 
@@ -486,24 +364,22 @@ function render() {
       topic.sentences.forEach(s => {
         const enMatch = s.en.toLowerCase().includes(q);
         const viMatch = s.vi.toLowerCase().includes(q);
-        if(q && !enMatch && !viMatch) {
-          rows += `<div class="sentence-row hidden"></div>`;
-          return;
-        }
+        if(q && !enMatch && !viMatch) return;
+
         topicVisible++;
         totalVisible++;
         rows += `<div class="sentence-row">
           <div class="stt-badge" style="background:${color}">${s.stt}</div>
           <div class="en-text">${highlight(s.en, q)}</div>
           <div class="vi-text">${highlight(s.vi, q)}</div>
-          <button class="speak-btn" title="Nghe phát âm" onclick="speak(this, ${JSON.stringify(s.en)})">🔊</button>
+          <button class="speak-btn" title="Nghe phát âm" onclick="speak(this, '${s.en.replace(/'/g, "\\'")}')">🔊</button>
         </div>`;
       });
 
       if(topicVisible === 0 && q) return;
       partVisible += topicVisible;
 
-      topicsHtml += `<div class="topic-card" style="animation-delay:${partVisible*0.015}s">
+      topicsHtml += `<div class="topic-card">
         <div class="topic-card-header" style="background:${color}18">
           <span class="topic-card-icon">${topic.icon}</span>
           <span class="topic-card-name" style="color:${color}">${topic.name}</span>
@@ -529,97 +405,8 @@ function render() {
     main.appendChild(section);
   });
 
-  if(q) {
-    document.getElementById("search-count").textContent = totalVisible > 0 ? `Tìm thấy ${totalVisible} câu` : "";
-  } else {
-    document.getElementById("search-count").textContent = "";
-  }
-
+  document.getElementById("search-count").textContent = q ? `Tìm thấy ${totalVisible} câu` : "";
   empty.style.display = totalVisible === 0 && q ? "block" : "none";
-}
-
-// --- SPEECH (Google TTS qua internet - không cần API key) ---
-let currentBtn = null;
-let currentAudio = null;
-
-function speak(btn, text) {
-  // Nếu đang phát thì dừng
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
-    if (currentBtn) {
-      currentBtn.classList.remove("speaking");
-      currentBtn.textContent = "🔊";
-    }
-    if (currentBtn === btn) { currentBtn = null; return; }
-  }
-
-  currentBtn = btn;
-  btn.classList.add("speaking");
-  btn.textContent = "🔉";
-
-  // Dùng Google Translate TTS - miễn phí, cần internet
-  const encoded = encodeURIComponent(text);
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=en&sl=en&total=1&idx=0&textlen=${text.length}&client=tw-ob`;
-
-  const audio = new Audio();
-  audio.src = url;
-  audio.volume = 1.0;
-  currentAudio = audio;
-
-  const reset = () => {
-    btn.classList.remove("speaking");
-    btn.textContent = "🔊";
-    if (currentBtn === btn) currentBtn = null;
-    if (currentAudio === audio) currentAudio = null;
-  };
-
-  audio.onended = reset;
-  audio.onerror = () => {
-    reset();
-    fallbackSpeak(btn, text);
-  };
-
-  audio.play().catch(() => {
-    reset();
-    fallbackSpeak(btn, text);
-  });
-}
-
-// Fallback dùng Web Speech API (built-in trình duyệt)
-function fallbackSpeak(btn, text) {
-  if (!window.speechSynthesis) return;
-  currentBtn = btn;
-  btn.classList.add("speaking");
-  btn.textContent = "🔉";
-
-  window.speechSynthesis.cancel();
-
-  const trySpeak = () => {
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-US";
-    utter.rate = 0.78;
-    utter.pitch = 1.05;
-    utter.volume = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.lang === "en-US") || voices.find(v => v.lang.startsWith("en"));
-    if (preferred) utter.voice = preferred;
-    const reset = () => {
-      btn.classList.remove("speaking");
-      btn.textContent = "🔊";
-      if (currentBtn === btn) currentBtn = null;
-    };
-    utter.onend = reset;
-    utter.onerror = reset;
-    window.speechSynthesis.speak(utter);
-  };
-
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length) {
-    trySpeak();
-  } else {
-    window.speechSynthesis.onvoiceschanged = () => { trySpeak(); };
-  }
 }
 
 init();
